@@ -1,0 +1,131 @@
+{{define "content"}}
+<!-- Store Hero -->
+    <section class="hero-store text-center">
+        <div class="container">
+            <h1 class="display-4 mb-3">Unser Laden in München</h1>
+            <p class="lead">Concept Store statt Supermarkt - erleben Sie mexikanische Kultur hautnah</p>
+        </div>
+    </section>
+
+    <!-- Store Info -->
+    <section class="py-5">
+        <div class="container">
+            <div class="row">
+                <!-- Contact Info -->
+                <div class="col-lg-6 mb-4">
+                    <div class="contact-card">
+                        <h3 style="color: var(--mexico-brown); margin-bottom: 20px;">
+                            <i class="fas fa-map-marker-alt me-2"></i>Kontakt & Adresse
+                        </h3>
+                        
+                        <div class="mb-4">
+                            <h5 style="color: var(--mexico-red);">Adresse</h5>
+                            <p class="mb-2">
+                                <strong>México Mágico Concept Store</strong><br>
+                                Maximilianstraße 42<br>
+                                80538 München<br>
+                                Deutschland
+                            </p>
+                        </div>
+
+                        <div class="mb-4">
+                            <h5 style="color: var(--mexico-orange);">Kontakt</h5>
+                            <p class="mb-1">
+                                <i class="fas fa-phone me-2"></i>
+                                <a href="tel:+4989123456789" class="text-decoration-none">+49 (0) 89 123 456 78</a>
+                            </p>
+                            <p class="mb-1">
+                                <i class="fas fa-envelope me-2"></i>
+                                <a href="mailto:laden@mexicomagico.de" class="text-decoration-none">laden@mexicomagico.de</a>
+                            </p>
+                            <p class="mb-0">
+                                <i class="fas fa-whatsapp me-2"></i>
+                                <a href="https://wa.me/4989123456789" class="text-decoration-none">WhatsApp Chat</a>
+                            </p>
+                        </div>
+
+                        <div class="mb-4">
+                            <h5 style="color: var(--mexico-green);">Anfahrt</h5>
+                            <p class="mb-1"><i class="fas fa-subway me-2"></i>5 Minuten zu Fuß vom Marienplatz</p>
+                            <p class="mb-1"><i class="fas fa-bus me-2"></i>Haltestelle: Maximilianstraße</p>
+                            <p class="mb-0"><i class="fas fa-parking me-2"></i>Parkhäuser in der Nähe verfügbar</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Opening Hours & Services -->
+                <div class="col-lg-6">
+                    <div class="opening-hours mb-4">
+                        <h3 style="color: var(--mexico-brown); margin-bottom: 20px;">
+                            <i class="fas fa-clock me-2"></i>Öffnungszeiten
+                        </h3>
+                        <div class="row">
+                            <div class="col-6"><strong>Montag:</strong></div>
+                            <div class="col-6">10:00 - 18:00</div>
+                            <div class="col-6"><strong>Dienstag:</strong></div>
+                            <div class="col-6">10:00 - 18:00</div>
+                            <div class="col-6"><strong>Mittwoch:</strong></div>
+                            <div class="col-6">10:00 - 18:00</div>
+                            <div class="col-6"><strong>Donnerstag:</strong></div>
+                            <div class="col-6">10:00 - 18:00</div>
+                            <div class="col-6"><strong>Freitag:</strong></div>
+                            <div class="col-6">10:00 - 18:00</div>
+                            <div class="col-6"><strong>Samstag:</strong></div>
+                            <div class="col-6">10:00 - 16:00</div>
+                            <div class="col-6"><strong>Sonntag:</strong></div>
+                            <div class="col-6"><span class="text-muted">Geschlossen</span></div>
+                        </div>
+                    </div>
+
+                    <div class="contact-card">
+                        <h4 style="color: var(--mexico-brown);">
+                            <i class="fas fa-star me-2"></i>Concept Store Services
+                        </h4>
+                        <ul class="list-unstyled">
+                            <li class="mb-2"><i class="fas fa-check text-success me-2"></i>Persönliche Produktberatung</li>
+                            <li class="mb-2"><i class="fas fa-check text-success me-2"></i>Regelmäßige Verkostungen</li>
+                            <li class="mb-2"><i class="fas fa-check text-success me-2"></i>Authentische mexikanische Atmosphäre</li>
+                            <li class="mb-2"><i class="fas fa-check text-success me-2"></i>Qualitätsprodukte statt Masse</li>
+                            <li class="mb-2"><i class="fas fa-check text-success me-2"></i>Online-Bestellung zur Abholung</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Store Images -->
+            <div class="row mt-5">
+                <div class="col-lg-6 mb-4">
+                    <img src="https://via.placeholder.com/500x400/006341/FFFFFF?text=Laden+Aussenansicht" class="img-fluid rounded shadow" alt="México Mágico Laden Außenansicht">
+                    <p class="text-center mt-2 text-muted">Außenansicht unseres Concept Stores</p>
+                </div>
+                <div class="col-lg-6 mb-4">
+                    <img src="https://via.placeholder.com/500x400/C8102E/FFFFFF?text=Laden+Innenansicht" class="img-fluid rounded shadow" alt="México Mágico Laden Innenansicht">
+                    <p class="text-center mt-2 text-muted">Innenbereich mit authentischer Atmosphäre</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+<style>
+.hero-store {
+    background: linear-gradient(135deg, var(--mexico-green) 0%, var(--mexico-red) 100%);
+    color: white;
+    padding: 80px 0;
+}
+
+.contact-card {
+    background: white;
+    border-radius: 15px;
+    padding: 30px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+    margin-bottom: 30px;
+}
+
+.opening-hours {
+    background: linear-gradient(135deg, var(--mexico-cream), #fff);
+    border-radius: 15px;
+    padding: 25px;
+}
+</style>
+{{end}}

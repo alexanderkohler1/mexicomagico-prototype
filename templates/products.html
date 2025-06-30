@@ -1,0 +1,125 @@
+{{define "content"}}
+<!-- Products Hero -->
+<section style="background: linear-gradient(135deg, var(--mexico-green) 0%, var(--mexico-red) 100%); color: white; padding: 80px 0;">
+    <div class="container text-center">
+        <h1 class="display-4 mb-3">Alle Produkte</h1>
+        <p class="lead">Entdecke die ganze Vielfalt authentischer mexikanischer Lebensmittel</p>
+    </div>
+</section>
+
+<!-- Products with Filter -->
+<section class="py-5">
+    <div class="container">
+        <!-- Category Filter Buttons -->
+        <div class="text-center mb-5">
+            <h2 class="section-title mb-4">Nach Kategorien filtern</h2>
+            <div class="btn-group flex-wrap" role="group">
+                <button type="button" class="btn btn-outline-mexico category-filter active" data-category="all">
+                    <i class="fas fa-th-large me-1"></i>Alle Kategorien
+                </button>
+                <button type="button" class="btn btn-outline-mexico category-filter" data-category="Getränke">
+                    <i class="fas fa-wine-bottle me-1"></i>Getränke
+                </button>
+                <button type="button" class="btn btn-outline-mexico category-filter" data-category="Basis & Grundzutaten">
+                    <i class="fas fa-seedling me-1"></i>Basis & Grundzutaten
+                </button>
+                <button type="button" class="btn btn-outline-mexico category-filter" data-category="Salsas & Saucen">
+                    <i class="fas fa-pepper-hot me-1"></i>Salsas & Saucen
+                </button>
+                <button type="button" class="btn btn-outline-mexico category-filter" data-category="Gewürze & Chilis">
+                    <i class="fas fa-mortar-pestle me-1"></i>Gewürze & Chilis
+                </button>
+                <button type="button" class="btn btn-outline-mexico category-filter" data-category="Süßes & Snacks">
+                    <i class="fas fa-candy-cane me-1"></i>Süßes & Snacks
+                </button>
+            </div>
+        </div>
+
+        <!-- Products Grid -->
+        <div class="row" id="products-container">
+            {{range .Products}}
+            <div class="col-md-6 col-lg-4 col-xl-3 mb-4 product-item" data-category="{{.Category}}">
+                <div class="card h-100 border-0 shadow-sm" style="transition: all 0.3s ease; border-radius: 15px; overflow: hidden; cursor: pointer;" onclick="window.location.href='/product/{{.ID}}'">
+                    <div class="position-relative">
+                        <img src="{{.Image}}" class="card-img-top" alt="{{.Name}}" style="height: 200px; object-fit: cover;">
+                        <span style="background: var(--mexico-green); color: white; padding: 5px 12px; border-radius: 15px; font-size: 0.8rem; font-weight: 600;" class="position-absolute top-0 start-0 m-2">{{.Category}}</span>
+                        {{if not .InStock}}
+                        <span class="badge bg-secondary position-absolute top-0 end-0 m-2">Ausverkauft</span>
+                        {{end}}
+                    </div>
+                    <div class="card-body d-flex flex-column">
+                        <h5 class="card-title">{{.Name}}</h5>
+                        <p class="card-text small">{{.Description}}</p>
+                        <div class="mt-auto">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <span style="background: linear-gradient(135deg, var(--mexico-gold), #FFA500); color: var(--mexico-brown); padding: 8px 15px; border-radius: 20px; font-weight: 700; font-size: 1.1rem; box-shadow: 0 2px 10px rgba(255, 215, 0, 0.3);">{{printf "%.2f" .Price}}€</span>
+                                {{if .InStock}}
+                                <button class="btn btn-mexico btn-sm" onclick="event.stopPropagation(); addToCart({{.ID}})">
+                                    <i class="fas fa-cart-plus"></i> Hinzufügen
+                                </button>
+                                {{else}}
+                                <button class="btn btn-outline-secondary btn-sm" disabled>
+                                    <i class="fas fa-clock"></i> Bald wieder da
+                                </button>
+                                {{end}}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {{end}}
+        </div>
+    </div>
+</section>
+
+<script>
+// Category Filter Functionality
+document.addEventListener('DOMContentLoaded', function() {
+    const filterButtons = document.querySelectorAll('.category-filter');
+    const productItems = document.querySelectorAll('.product-item');
+
+    filterButtons.forEach(button => {
+        button.addEventListener('click', function() {
+            const category = this.dataset.category;
+            
+            // Update active button
+            filterButtons.forEach(btn => btn.classList.remove('active'));
+            this.classList.add('active');
+            
+            // Filter products with smooth animation
+            productItems.forEach(item => {
+                if (category === 'all' || item.dataset.category === category) {
+                    item.style.display = 'block';
+                    item.style.animation = 'fadeIn 0.5s ease-in';
+                } else {
+                    item.style.display = 'none';
+                }
+            });
+        });
+    });
+});
+</script>
+
+<style>
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.category-filter.active {
+    background-color: var(--mexico-red) !important;
+    color: white !important;
+    border-color: var(--mexico-red) !important;
+}
+
+.btn-group .btn {
+    margin: 2px;
+    border-radius: 20px !important;
+}
+
+.card:hover {
+    transform: translateY(-8px) scale(1.02);
+    box-shadow: 0 15px 35px rgba(200, 16, 46, 0.2) !important;
+}
+</style>
+{{end}}

@@ -1,0 +1,152 @@
+{{define "content"}}
+<!-- Recipes Hero -->
+<section style="background: linear-gradient(135deg, var(--mexico-orange) 0%, var(--mexico-red) 100%); color: white; padding: 80px 0;">
+    <div class="container text-center">
+        <h1 class="display-4 mb-3">Authentische Rezepte</h1>
+        <p class="lead">Von Rodrigos Abuela bis zu Lisas Lieblingsgerichten - entdecke die wahren Aromen Mexikos</p>
+    </div>
+</section>
+
+<!-- Recipes Grid -->
+<section class="py-5">
+    <div class="container">
+        <div class="row">
+            {{range .Recipes}}
+            <div class="col-md-6 col-lg-4 mb-4">
+                <div class="card h-100 border-0 shadow-sm" style="transition: all 0.3s ease; border-radius: 15px; overflow: hidden;">
+                    <div class="position-relative">
+                        <img src="{{.Image}}" class="card-img-top" alt="{{.Name}}" style="height: 250px; object-fit: cover;">
+                        <div class="position-absolute top-0 start-0 m-2">
+                            <span class="badge" style="background: var(--mexico-orange); color: white;">
+                                <i class="fas fa-star"></i> Tradicional
+                            </span>
+                        </div>
+                        <div class="position-absolute bottom-0 start-0 end-0 p-3" style="background: linear-gradient(transparent, rgba(0,0,0,0.7));">
+                            <h5 class="text-white mb-0">{{.Name}}</h5>
+                        </div>
+                    </div>
+                    <div class="card-body d-flex flex-column">
+                        <p class="card-text text-muted mb-3">{{.Description}}</p>
+                        
+                        <div class="d-flex justify-content-between small mb-3">
+                            <span class="text-muted">
+                                <i class="fas fa-clock" style="color: var(--mexico-orange);"></i> {{.PrepTime}}
+                            </span>
+                            <span class="text-muted">
+                                <i class="fas fa-chart-bar" style="color: var(--mexico-green);"></i> {{.Difficulty}}
+                            </span>
+                        </div>
+
+                        <!-- Ingredients Preview -->
+                        <div class="mb-3">
+                            <h6 style="color: var(--mexico-brown);">Hauptzutaten:</h6>
+                            <div class="d-flex flex-wrap">
+                                {{range $index, $ingredient := .Ingredients}}
+                                {{if lt $index 3}}
+                                <span class="badge bg-light text-dark me-1 mb-1" style="border: 1px solid var(--mexico-cream);">{{$ingredient}}</span>
+                                {{end}}
+                                {{end}}
+                                {{if gt (len .Ingredients) 3}}
+                                <span class="badge bg-secondary">+{{sub (len .Ingredients) 3}} weitere</span>
+                                {{end}}
+                            </div>
+                        </div>
+
+                        <div class="mt-auto">
+                            <button class="btn btn-mexico btn-sm w-100 mb-2">
+                                <i class="fas fa-utensils me-2"></i>Komplettes Rezept
+                            </button>
+                            <div class="d-flex gap-2">
+                                <button class="btn btn-outline-mexico btn-sm flex-fill">
+                                    <i class="fas fa-heart"></i> Favorit
+                                </button>
+                                <button class="btn btn-outline-mexico btn-sm flex-fill">
+                                    <i class="fas fa-share"></i> Teilen
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {{end}}
+        </div>
+
+        <!-- Additional Info -->
+        <div class="row mt-5">
+            <div class="col-lg-8 mx-auto">
+                <div class="alert alert-info border-0" style="background: linear-gradient(135deg, var(--mexico-cream), #fff);">
+                    <div class="row align-items-center">
+                        <div class="col-md-8">
+                            <h5 style="color: var(--mexico-brown);">
+                                <i class="fas fa-mobile-alt me-2"></i>Rezepte in der App
+                            </h5>
+                            <p class="mb-0">Alle Rezepte offline verfügbar, Schritt-für-Schritt Anleitungen und direkte Zutatenliste zum Bestellen.</p>
+                        </div>
+                        <div class="col-md-4 text-center">
+                            <a href="/app-download" class="btn btn-mexico">
+                                <i class="fas fa-download me-2"></i>App herunterladen
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Recipe Categories -->
+<section class="py-5 bg-light">
+    <div class="container">
+        <h2 class="text-center section-title mb-5">Rezept-Kategorien</h2>
+        <div class="row">
+            <div class="col-md-3 mb-4">
+                <div class="card text-center border-0 shadow-sm">
+                    <div class="card-body">
+                        <i class="fas fa-cocktail fa-3x mb-3" style="color: var(--mexico-red);"></i>
+                        <h5>Getränke</h5>
+                        <p class="text-muted small">Horchata, Agua Fresca, Cocktails</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3 mb-4">
+                <div class="card text-center border-0 shadow-sm">
+                    <div class="card-body">
+                        <i class="fas fa-bread-slice fa-3x mb-3" style="color: var(--mexico-orange);"></i>
+                        <h5>Hauptgerichte</h5>
+                        <p class="text-muted small">Tacos, Enchiladas, Chiles Rellenos</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3 mb-4">
+                <div class="card text-center border-0 shadow-sm">
+                    <div class="card-body">
+                        <i class="fas fa-pepper-hot fa-3x mb-3" style="color: var(--mexico-green);"></i>
+                        <h5>Salsas & Saucen</h5>
+                        <p class="text-muted small">Salsas, Mole, Marinaden</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3 mb-4">
+                <div class="card text-center border-0 shadow-sm">
+                    <div class="card-body">
+                        <i class="fas fa-birthday-cake fa-3x mb-3" style="color: var(--mexico-gold);"></i>
+                        <h5>Desserts</h5>
+                        <p class="text-muted small">Churros, Flan, Tres Leches</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<style>
+.card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 25px rgba(200, 16, 46, 0.15) !important;
+}
+
+.badge {
+    font-size: 0.75rem;
+}
+</style>
+{{end}}

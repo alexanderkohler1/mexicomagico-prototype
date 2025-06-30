@@ -1,0 +1,396 @@
+{{define "content"}}
+<!-- Checkout Hero -->
+<section style="background: linear-gradient(135deg, var(--mexico-green) 0%, var(--mexico-red) 100%); color: white; padding: 60px 0;">
+    <div class="container text-center">
+        <h1 class="display-5 mb-3">
+            <i class="fas fa-lock me-3"></i>Sichere Kasse
+        </h1>
+        <p class="lead">Vervollständigen Sie Ihre Bestellung</p>
+    </div>
+</section>
+
+<!-- Checkout Steps -->
+<section class="py-3 bg-light">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                <div class="d-flex justify-content-between align-items-center">
+                    <div class="step-item active">
+                        <div class="step-number">1</div>
+                        <small>Warenkorb</small>
+                    </div>
+                    <div class="step-line active"></div>
+                    <div class="step-item active">
+                        <div class="step-number">2</div>
+                        <small>Kasse</small>
+                    </div>
+                    <div class="step-line"></div>
+                    <div class="step-item">
+                        <div class="step-number">3</div>
+                        <small>Bestätigung</small>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Checkout Form -->
+<section class="py-5">
+    <div class="container">
+        <form id="checkout-form">
+            <div class="row">
+                <!-- Checkout Form -->
+                <div class="col-lg-8 mb-4">
+                    <!-- Delivery Address -->
+                    <div class="card border-0 shadow-sm mb-4">
+                        <div class="card-header bg-white">
+                            <h5 class="mb-0" style="color: var(--mexico-brown);">
+                                <i class="fas fa-map-marker-alt me-2"></i>Lieferadresse
+                            </h5>
+                        </div>
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    <label for="firstName" class="form-label">Vorname *</label>
+                                    <input type="text" class="form-control" id="firstName" required>
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label for="lastName" class="form-label">Nachname *</label>
+                                    <input type="text" class="form-control" id="lastName" required>
+                                </div>
+                            </div>
+                            <div class="mb-3">
+                                <label for="email" class="form-label">E-Mail-Adresse *</label>
+                                <input type="email" class="form-control" id="email" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="phone" class="form-label">Telefonnummer</label>
+                                <input type="tel" class="form-control" id="phone">
+                            </div>
+                            <div class="mb-3">
+                                <label for="street" class="form-label">Straße und Hausnummer *</label>
+                                <input type="text" class="form-control" id="street" required>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-4 mb-3">
+                                    <label for="zipCode" class="form-label">PLZ *</label>
+                                    <input type="text" class="form-control" id="zipCode" required>
+                                </div>
+                                <div class="col-md-8 mb-3">
+                                    <label for="city" class="form-label">Stadt *</label>
+                                    <input type="text" class="form-control" id="city" required>
+                                </div>
+                            </div>
+                            <div class="mb-3">
+                                <label for="country" class="form-label">Land *</label>
+                                <select class="form-select" id="country" required>
+                                    <option value="">Bitte wählen...</option>
+                                    <option value="DE" selected>Deutschland</option>
+                                    <option value="AT">Österreich</option>
+                                    <option value="CH">Schweiz</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Delivery Options -->
+                    <div class="card border-0 shadow-sm mb-4">
+                        <div class="card-header bg-white">
+                            <h5 class="mb-0" style="color: var(--mexico-brown);">
+                                <i class="fas fa-truck me-2"></i>Versandoptionen
+                            </h5>
+                        </div>
+                        <div class="card-body">
+                            <div class="form-check mb-3">
+                                <input class="form-check-input" type="radio" name="shipping" id="standard" value="standard" checked>
+                                <label class="form-check-label" for="standard">
+                                    <div class="d-flex justify-content-between">
+                                        <div>
+                                            <strong>Standardversand</strong>
+                                            <br><small class="text-muted">3-5 Werktage</small>
+                                        </div>
+                                        <div>
+                                            <span class="badge bg-success">Kostenlos ab 57€</span>
+                                        </div>
+                                    </div>
+                                </label>
+                            </div>
+                            <div class="form-check mb-3">
+                                <input class="form-check-input" type="radio" name="shipping" id="express" value="express">
+                                <label class="form-check-label" for="express">
+                                    <div class="d-flex justify-content-between">
+                                        <div>
+                                            <strong>Express-Versand</strong>
+                                            <br><small class="text-muted">1-2 Werktage</small>
+                                        </div>
+                                        <div>
+                                            <span class="badge" style="background: var(--mexico-orange);">+ 9.90€</span>
+                                        </div>
+                                    </div>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Payment Method -->
+                    <div class="card border-0 shadow-sm mb-4">
+                        <div class="card-header bg-white">
+                            <h5 class="mb-0" style="color: var(--mexico-brown);">
+                                <i class="fas fa-credit-card me-2"></i>Zahlungsart
+                            </h5>
+                        </div>
+                        <div class="card-body">
+                            <div class="form-check mb-3">
+                                <input class="form-check-input" type="radio" name="payment" id="credit-card" value="credit-card" checked>
+                                <label class="form-check-label" for="credit-card">
+                                    <div class="d-flex align-items-center">
+                                        <div class="me-3">
+                                            <i class="fab fa-cc-visa fa-2x me-1"></i>
+                                            <i class="fab fa-cc-mastercard fa-2x"></i>
+                                        </div>
+                                        <div>
+                                            <strong>Kreditkarte</strong>
+                                            <br><small class="text-muted">Visa, Mastercard</small>
+                                        </div>
+                                    </div>
+                                </label>
+                            </div>
+                            <div class="form-check mb-3">
+                                <input class="form-check-input" type="radio" name="payment" id="paypal" value="paypal">
+                                <label class="form-check-label" for="paypal">
+                                    <div class="d-flex align-items-center">
+                                        <div class="me-3">
+                                            <i class="fab fa-paypal fa-2x"></i>
+                                        </div>
+                                        <div>
+                                            <strong>PayPal</strong>
+                                            <br><small class="text-muted">Schnell und sicher</small>
+                                        </div>
+                                    </div>
+                                </label>
+                            </div>
+                            <div class="form-check mb-3">
+                                <input class="form-check-input" type="radio" name="payment" id="bank-transfer" value="bank-transfer">
+                                <label class="form-check-label" for="bank-transfer">
+                                    <div class="d-flex align-items-center">
+                                        <div class="me-3">
+                                            <i class="fas fa-university fa-2x"></i>
+                                        </div>
+                                        <div>
+                                            <strong>Überweisung</strong>
+                                            <br><small class="text-muted">Vorkasse</small>
+                                        </div>
+                                    </div>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Special Instructions -->
+                    <div class="card border-0 shadow-sm mb-4">
+                        <div class="card-header bg-white">
+                            <h5 class="mb-0" style="color: var(--mexico-brown);">
+                                <i class="fas fa-comment me-2"></i>Besondere Wünsche
+                            </h5>
+                        </div>
+                        <div class="card-body">
+                            <div class="mb-3">
+                                <label for="notes" class="form-label">Anmerkungen zur Bestellung</label>
+                                <textarea class="form-control" id="notes" rows="3" placeholder="z.B. Lieferhinweise, Allergien, etc."></textarea>
+                            </div>
+                            <div class="form-check mb-3">
+                                <input class="form-check-input" type="checkbox" id="newsletter">
+                                <label class="form-check-label" for="newsletter">
+                                    Newsletter abonnieren und 10% Rabatt auf die nächste Bestellung erhalten
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Order Summary -->
+                <div class="col-lg-4">
+                    <div class="card border-0 shadow-sm sticky-top" style="top: 20px;">
+                        <div class="card-header bg-white">
+                            <h5 class="mb-0" style="color: var(--mexico-brown);">
+                                <i class="fas fa-receipt me-2"></i>Bestellübersicht
+                            </h5>
+                        </div>
+                        <div class="card-body">
+                            <!-- Cart Items Summary -->
+                            {{range .Cart}}
+                            <div class="d-flex justify-content-between align-items-center mb-2">
+                                <div>
+                                    <small class="fw-bold">{{.Product.Name}}</small>
+                                    <br><small class="text-muted">{{.Quantity}}x à {{printf "%.2f" .Product.Price}}€</small>
+                                </div>
+                                <div>
+                                    <small class="fw-bold">{{printf "%.2f" (mul .Product.Price (float64 .Quantity))}}€</small>
+                                </div>
+                            </div>
+                            {{end}}
+                            
+                            <hr>
+                            
+                            <div class="d-flex justify-content-between mb-2">
+                                <span>Zwischensumme:</span>
+                                <span>{{printf "%.2f" (calculateSubtotal .Cart)}}€</span>
+                            </div>
+                            <div class="d-flex justify-content-between mb-2">
+                                <span>Versandkosten:</span>
+                                <span id="shipping-cost">
+                                    {{if ge (calculateSubtotal .Cart) 57.0}}
+                                        Kostenlos
+                                    {{else}}
+                                        4.90€
+                                    {{end}}
+                                </span>
+                            </div>
+                            <hr>
+                            <div class="d-flex justify-content-between mb-3">
+                                <strong>Gesamtsumme:</strong>
+                                <strong style="color: var(--mexico-red);" id="total-cost">
+                                    {{printf "%.2f" (calculateTotal .Cart)}}€
+                                </strong>
+                            </div>
+                            
+                            <!-- Terms and Conditions -->
+                            <div class="mb-3">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" id="terms" required>
+                                    <label class="form-check-label" for="terms">
+                                        <small>Ich akzeptiere die <a href="#" style="color: var(--mexico-red);">AGB</a> und <a href="#" style="color: var(--mexico-red);">Datenschutzbestimmungen</a> *</small>
+                                    </label>
+                                </div>
+                            </div>
+                            
+                            <button type="submit" class="btn btn-mexico btn-lg w-100 mb-3" id="place-order-btn">
+                                <i class="fas fa-lock me-2"></i>Bestellung abschicken
+                            </button>
+                            
+                            <!-- Security Info -->
+                            <div class="text-center">
+                                <small class="text-muted">
+                                    <i class="fas fa-shield-alt me-1"></i>
+                                    SSL-verschlüsselt & sicher
+                                </small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</section>
+
+<script>
+document.getElementById('checkout-form').addEventListener('submit', function(e) {
+    e.preventDefault();
+    
+    // Validate form
+    if (!this.checkValidity()) {
+        this.classList.add('was-validated');
+        return;
+    }
+    
+    // Show loading state
+    const submitBtn = document.getElementById('place-order-btn');
+    const originalText = submitBtn.innerHTML;
+    submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>Wird verarbeitet...';
+    submitBtn.disabled = true;
+    
+    // Process order
+    setTimeout(() => {
+        // Simulate order processing
+        window.location.href = '/order-confirmation';
+    }, 2000);
+});
+
+// Update shipping costs based on selected option
+document.querySelectorAll('input[name="shipping"]').forEach(radio => {
+    radio.addEventListener('change', function() {
+        const shippingCost = document.getElementById('shipping-cost');
+        const totalCost = document.getElementById('total-cost');
+        
+        if (this.value === 'express') {
+            shippingCost.textContent = '9.90€';
+            // Update total - you'd need to calculate this properly
+        } else {
+            {{if ge (calculateSubtotal .Cart) 57.0}}
+                shippingCost.textContent = 'Kostenlos';
+            {{else}}
+                shippingCost.textContent = '4.90€';
+            {{end}}
+        }
+    });
+});
+</script>
+
+<style>
+.step-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    color: #6c757d;
+}
+
+.step-item.active {
+    color: var(--mexico-red);
+}
+
+.step-number {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: #e9ecef;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+.step-item.active .step-number {
+    background: var(--mexico-red);
+    color: white;
+}
+
+.step-line {
+    flex: 1;
+    height: 2px;
+    background: #e9ecef;
+    margin: 0 20px;
+    margin-top: 20px;
+}
+
+.step-line.active {
+    background: var(--mexico-red);
+}
+
+.form-check-input:checked {
+    background-color: var(--mexico-red);
+    border-color: var(--mexico-red);
+}
+
+.form-check-label {
+    cursor: pointer;
+}
+
+.sticky-top {
+    position: sticky;
+    top: 20px;
+    z-index: 1020;
+}
+
+@media (max-width: 768px) {
+    .sticky-top {
+        position: static;
+    }
+    
+    .step-line {
+        margin: 0 10px;
+    }
+}
+</style>
+{{end}}

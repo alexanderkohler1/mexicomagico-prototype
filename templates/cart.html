@@ -1,0 +1,298 @@
+{{define "content"}}
+<!-- Cart Hero -->
+<section style="background: linear-gradient(135deg, var(--mexico-orange) 0%, var(--mexico-red) 100%); color: white; padding: 60px 0;">
+    <div class="container text-center">
+        <h1 class="display-5 mb-3">
+            <i class="fas fa-shopping-cart me-3"></i>Warenkorb
+        </h1>
+        <p class="lead">Ihre ausgewählten mexikanischen Köstlichkeiten</p>
+    </div>
+</section>
+
+<!-- Cart Content -->
+<section class="py-5">
+    <div class="container">
+        {{if .Cart}}
+        <div class="row">
+            <!-- Cart Items -->
+            <div class="col-lg-8 mb-4">
+                <div class="card border-0 shadow-sm">
+                    <div class="card-header bg-white border-bottom">
+                        <h5 class="mb-0" style="color: var(--mexico-brown);">
+                            <i class="fas fa-list me-2"></i>Ihre Artikel ({{len .Cart}})
+                        </h5>
+                    </div>
+                    <div class="card-body p-0">
+                        {{range $index, $item := .Cart}}
+                        <div class="row align-items-center p-4 {{if ne $index 0}}border-top{{end}}" data-product-id="{{$item.Product.ID}}">
+                            <div class="col-md-2 mb-3 mb-md-0">
+                                <img src="{{$item.Product.Image}}" class="img-fluid rounded" alt="{{$item.Product.Name}}" style="height: 80px; width: 80px; object-fit: cover;">
+                            </div>
+                            <div class="col-md-4 mb-3 mb-md-0">
+                                <h6 class="mb-1">
+                                    <a href="/product/{{$item.Product.ID}}" style="color: var(--mexico-brown); text-decoration: none;">
+                                        {{$item.Product.Name}}
+                                    </a>
+                                </h6>
+                                <small class="text-muted">{{$item.Product.Category}}</small>
+                                <div class="mt-1">
+                                    <span class="badge" style="background: var(--mexico-green); color: white;">
+                                        {{printf "%.2f" $item.Product.Price}}€ / Stück
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="col-md-3 mb-3 mb-md-0">
+                                <div class="input-group input-group-sm">
+                                    <button class="btn btn-outline-mexico" type="button" onclick="updateQuantity({{$item.Product.ID}}, {{$item.Quantity}} - 1)">
+                                        <i class="fas fa-minus"></i>
+                                    </button>
+                                    <input type="number" class="form-control text-center" value="{{$item.Quantity}}" min="1" max="10" 
+                                           onchange="updateQuantity({{$item.Product.ID}}, this.value)" id="qty-{{$item.Product.ID}}">
+                                    <button class="btn btn-outline-mexico" type="button" onclick="updateQuantity({{$item.Product.ID}}, {{$item.Quantity}} + 1)">
+                                        <i class="fas fa-plus"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="col-md-2 mb-3 mb-md-0 text-md-center">
+                                <div class="fw-bold" style="color: var(--mexico-brown);">
+                                    {{printf "%.2f" (mul $item.Product.Price (float64 $item.Quantity))}}€
+                                </div>
+                            </div>
+                            <div class="col-md-1 text-md-center">
+                                <button class="btn btn-outline-danger btn-sm" onclick="removeFromCart({{$item.Product.ID}})" title="Entfernen">
+                                    <i class="fas fa-trash"></i>
+                                </button>
+                            </div>
+                        </div>
+                        {{end}}
+                    </div>
+                </div>
+                
+                <!-- Continue Shopping -->
+                <div class="mt-4">
+                    <a href="/products" class="btn btn-outline-mexico">
+                        <i class="fas fa-arrow-left me-2"></i>Weiter einkaufen
+                    </a>
+                </div>
+            </div>
+            
+            <!-- Order Summary -->
+            <div class="col-lg-4">
+                <div class="card border-0 shadow-sm sticky-top" style="top: 20px;">
+                    <div class="card-header bg-white border-bottom">
+                        <h5 class="mb-0" style="color: var(--mexico-brown);">
+                            <i class="fas fa-calculator me-2"></i>Bestellübersicht
+                        </h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between mb-2">
+                            <span>Zwischensumme:</span>
+                            <span id="subtotal">{{printf "%.2f" (calculateSubtotal .Cart)}}€</span>
+                        </div>
+                        <div class="d-flex justify-content-between mb-2">
+                            <span>Versandkosten:</span>
+                            <span id="shipping">
+                                {{if ge (calculateSubtotal .Cart) 57.0}}
+                                    <span class="text-success">Kostenlos</span>
+                                {{else}}
+                                    4.90€
+                                {{end}}
+                            </span>
+                        </div>
+                        <hr>
+                        <div class="d-flex justify-content-between mb-3">
+                            <strong>Gesamtsumme:</strong>
+                            <strong style="color: var(--mexico-red);" id="total">
+                                {{printf "%.2f" (calculateTotal .Cart)}}€
+                            </strong>
+                        </div>
+                        
+                        {{if lt (calculateSubtotal .Cart) 57.0}}
+                        <div class="alert alert-info small mb-3">
+                            <i class="fas fa-truck me-1"></i>
+                            Noch {{printf "%.2f" (sub 57.0 (calculateSubtotal .Cart))}}€ für kostenlosen Versand!
+                        </div>
+                        {{end}}
+                        
+                        <button class="btn btn-mexico btn-lg w-100 mb-3" onclick="proceedToCheckout()">
+                            <i class="fas fa-lock me-2"></i>Zur Kasse
+                        </button>
+                        
+                        <!-- Payment Methods -->
+                        <div class="text-center">
+                            <small class="text-muted d-block mb-2">Sichere Bezahlung mit:</small>
+                            <div class="d-flex justify-content-center gap-2">
+                                <i class="fab fa-cc-visa fa-2x text-muted"></i>
+                                <i class="fab fa-cc-mastercard fa-2x text-muted"></i>
+                                <i class="fab fa-paypal fa-2x text-muted"></i>
+                                <i class="fas fa-university fa-2x text-muted"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Trust Badges -->
+                <div class="card border-0 shadow-sm mt-4">
+                    <div class="card-body text-center">
+                        <div class="row">
+                            <div class="col-4">
+                                <i class="fas fa-shipping-fast fa-2x mb-2" style="color: var(--mexico-orange);"></i>
+                                <small class="d-block"><strong>Schneller Versand</strong><br>1-3 Werktage</small>
+                            </div>
+                            <div class="col-4">
+                                <i class="fas fa-undo fa-2x mb-2" style="color: var(--mexico-green);"></i>
+                                <small class="d-block"><strong>30 Tage</strong><br>Rückgabe</small>
+                            </div>
+                            <div class="col-4">
+                                <i class="fas fa-shield-alt fa-2x mb-2" style="color: var(--mexico-red);"></i>
+                                <small class="d-block"><strong>Sicher</strong><br>SSL-Verschlüsselt</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {{else}}
+        <!-- Empty Cart -->
+        <div class="row justify-content-center">
+            <div class="col-md-6 text-center">
+                <div class="py-5">
+                    <i class="fas fa-shopping-cart fa-5x mb-4 text-muted"></i>
+                    <h3 style="color: var(--mexico-brown);">Ihr Warenkorb ist leer</h3>
+                    <p class="text-muted mb-4">Entdecken Sie unsere authentischen mexikanischen Produkte und füllen Sie Ihren Warenkorb mit köstlichen Aromen!</p>
+                    <a href="/products" class="btn btn-mexico btn-lg">
+                        <i class="fas fa-shopping-basket me-2"></i>Jetzt einkaufen
+                    </a>
+                </div>
+            </div>
+        </div>
+        {{end}}
+    </div>
+</section>
+
+<!-- Recommended Products -->
+{{if .Cart}}
+<section class="py-5 bg-light">
+    <div class="container">
+        <h3 class="text-center mb-4" style="color: var(--mexico-brown);">Das könnte Ihnen auch gefallen</h3>
+        <div class="row">
+            <!-- Here you could add recommended products logic -->
+            <div class="col-12 text-center text-muted">
+                <p>Weitere Produktempfehlungen folgen...</p>
+            </div>
+        </div>
+    </div>
+</section>
+{{end}}
+
+<script>
+function updateQuantity(productId, newQuantity) {
+    newQuantity = parseInt(newQuantity);
+    if (newQuantity < 1) newQuantity = 1;
+    if (newQuantity > 10) newQuantity = 10;
+    
+    fetch('/api/cart/update', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+            product_id: productId,
+            quantity: newQuantity
+        })
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            location.reload(); // Reload to show updated totals
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+    });
+}
+
+function removeFromCart(productId) {
+    if (confirm('Möchten Sie diesen Artikel wirklich aus dem Warenkorb entfernen?')) {
+        fetch('/api/cart/remove', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                product_id: productId
+            })
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                location.reload();
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+        });
+    }
+}
+
+function proceedToCheckout() {
+    window.location.href = '/checkout';
+}
+
+// Add cart functionality to base template
+function addToCart(productId) {
+    fetch('/api/cart/add', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+            product_id: productId,
+            quantity: 1
+        })
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            // Show success message
+            alert('Produkt wurde zum Warenkorb hinzugefügt!');
+            // Update cart count if exists
+            updateCartCount(data.cart_count);
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+    });
+}
+
+function updateCartCount(count) {
+    const cartBadge = document.querySelector('.cart-count');
+    if (cartBadge) {
+        cartBadge.textContent = count;
+    }
+}
+</script>
+
+<style>
+.sticky-top {
+    position: sticky;
+    top: 20px;
+    z-index: 1020;
+}
+
+.card-header {
+    border-bottom: 1px solid var(--mexico-cream) !important;
+}
+
+.input-group-sm .btn {
+    padding: 0.25rem 0.5rem;
+    font-size: 0.875rem;
+}
+
+@media (max-width: 768px) {
+    .sticky-top {
+        position: static;
+    }
+}
+</style>
+{{end}}

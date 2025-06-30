@@ -1,0 +1,312 @@
+{{define "content"}}
+<!-- Product Detail Hero -->
+<section class="py-5">
+    <div class="container">
+        {{range .Products}}
+        <div class="row">
+            <div class="col-lg-6 mb-4">
+                <div class="position-relative">
+                    <img src="{{.Image}}" class="img-fluid rounded-3 shadow" alt="{{.Name}}" style="width: 100%; height: 400px; object-fit: cover;">
+                    <span style="background: var(--mexico-green); color: white; padding: 8px 15px; border-radius: 20px; font-size: 0.9rem; font-weight: 600;" class="position-absolute top-0 start-0 m-3">{{.Category}}</span>
+                    {{if not .InStock}}
+                    <span class="badge bg-secondary position-absolute top-0 end-0 m-3">Ausverkauft</span>
+                    {{end}}
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <div class="ps-lg-4">
+                    <nav aria-label="breadcrumb" class="mb-3">
+                        <ol class="breadcrumb">
+                            <li class="breadcrumb-item"><a href="/" style="color: var(--mexico-red);">Home</a></li>
+                            <li class="breadcrumb-item"><a href="/products" style="color: var(--mexico-red);">Produkte</a></li>
+                            <li class="breadcrumb-item active" aria-current="page">{{.Name}}</li>
+                        </ol>
+                    </nav>
+                    
+                    <h1 class="display-5 mb-3" style="color: var(--mexico-brown);">{{.Name}}</h1>
+                    <p class="lead text-muted mb-4">{{.Description}}</p>
+                    
+                    <div class="mb-4">
+                        <span style="background: linear-gradient(135deg, var(--mexico-gold), #FFA500); color: var(--mexico-brown); padding: 12px 20px; border-radius: 25px; font-weight: 700; font-size: 1.5rem; box-shadow: 0 4px 15px rgba(255, 215, 0, 0.3);">{{printf "%.2f" .Price}}€</span>
+                    </div>
+                    
+                    <!-- Product Info -->
+                    <div class="row mb-4">
+                        <div class="col-6">
+                            <strong style="color: var(--mexico-brown);">Kategorie:</strong><br>
+                            <span class="text-muted">{{.Category}}</span>
+                        </div>
+                        <div class="col-6">
+                            <strong style="color: var(--mexico-brown);">Verfügbarkeit:</strong><br>
+                            {{if .InStock}}
+                            <span class="text-success"><i class="fas fa-check-circle me-1"></i>Auf Lager</span>
+                            {{else}}
+                            <span class="text-warning"><i class="fas fa-clock me-1"></i>Bald wieder da</span>
+                            {{end}}
+                        </div>
+                    </div>
+                    
+                    <!-- Quantity and Add to Cart -->
+                    <div class="mb-4">
+                        <div class="row align-items-center">
+                            <div class="col-md-4 mb-3">
+                                <label for="quantity" class="form-label"><strong>Menge:</strong></label>
+                                <div class="input-group">
+                                    <button class="btn btn-outline-mexico" type="button" onclick="decreaseQuantity()">-</button>
+                                    <input type="number" class="form-control text-center" id="quantity" value="1" min="1" max="10">
+                                    <button class="btn btn-outline-mexico" type="button" onclick="increaseQuantity()">+</button>
+                                </div>
+                            </div>
+                            <div class="col-md-8 mb-3">
+                                {{if .InStock}}
+                                <button class="btn btn-mexico btn-lg w-100" onclick="addToCartDetail({{.ID}})">
+                                    <i class="fas fa-cart-plus me-2"></i>In den Warenkorb
+                                </button>
+                                {{else}}
+                                <button class="btn btn-outline-secondary btn-lg w-100" disabled>
+                                    <i class="fas fa-clock me-2"></i>Bald wieder verfügbar
+                                </button>
+                                {{end}}
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Additional Actions -->
+                    <div class="d-flex gap-2 mb-4">
+                        <button class="btn btn-outline-mexico flex-fill">
+                            <i class="fas fa-heart me-1"></i>Favorit
+                        </button>
+                        <button class="btn btn-outline-mexico flex-fill">
+                            <i class="fas fa-share me-1"></i>Teilen
+                        </button>
+                        <button class="btn btn-outline-mexico flex-fill">
+                            <i class="fas fa-question-circle me-1"></i>Fragen
+                        </button>
+                    </div>
+                    
+                    <!-- Product Features -->
+                    <div class="alert alert-light border-0" style="background: linear-gradient(135deg, var(--mexico-cream), #fff);">
+                        <div class="row text-center">
+                            <div class="col-4">
+                                <i class="fas fa-shipping-fast fa-2x mb-2" style="color: var(--mexico-orange);"></i>
+                                <small class="d-block"><strong>Kostenloser Versand</strong><br>ab 57€</small>
+                            </div>
+                            <div class="col-4">
+                                <i class="fas fa-undo fa-2x mb-2" style="color: var(--mexico-green);"></i>
+                                <small class="d-block"><strong>30 Tage</strong><br>Rückgaberecht</small>
+                            </div>
+                            <div class="col-4">
+                                <i class="fas fa-certificate fa-2x mb-2" style="color: var(--mexico-red);"></i>
+                                <small class="d-block"><strong>100%</strong><br>Authentisch</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {{end}}
+    </div>
+</section>
+
+<!-- Product Details Tabs -->
+<section class="py-5 bg-light">
+    <div class="container">
+        <ul class="nav nav-tabs mb-4" id="productTabs" role="tablist">
+            <li class="nav-item" role="presentation">
+                <button class="nav-link active" id="description-tab" data-bs-toggle="tab" data-bs-target="#description" type="button" role="tab">
+                    <i class="fas fa-info-circle me-1"></i>Beschreibung
+                </button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" id="ingredients-tab" data-bs-toggle="tab" data-bs-target="#ingredients" type="button" role="tab">
+                    <i class="fas fa-list me-1"></i>Inhaltsstoffe
+                </button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" id="usage-tab" data-bs-toggle="tab" data-bs-target="#usage" type="button" role="tab">
+                    <i class="fas fa-utensils me-1"></i>Verwendung
+                </button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" id="reviews-tab" data-bs-toggle="tab" data-bs-target="#reviews" type="button" role="tab">
+                    <i class="fas fa-star me-1"></i>Bewertungen
+                </button>
+            </li>
+        </ul>
+        
+        <div class="tab-content" id="productTabsContent">
+            <div class="tab-pane fade show active" id="description" role="tabpanel">
+                <div class="card border-0">
+                    <div class="card-body">
+                        {{range .Products}}
+                        <h5 style="color: var(--mexico-brown);">Über {{.Name}}</h5>
+                        <p>{{.Description}}</p>
+                        <p>Dieses authentische mexikanische Produkt wurde sorgfältig ausgewählt und stammt direkt aus Mexiko. Es repräsentiert die wahren Aromen und Traditionen der mexikanischen Küche.</p>
+                        
+                        <h6 style="color: var(--mexico-brown);" class="mt-4">Herkunft & Qualität</h6>
+                        <ul>
+                            <li>100% authentisch aus Mexiko</li>
+                            <li>Traditionelle Herstellungsverfahren</li>
+                            <li>Regelmäßige Qualitätskontrollen</li>
+                            <li>Importiert von México Mágico</li>
+                        </ul>
+                        {{end}}
+                    </div>
+                </div>
+            </div>
+            
+            <div class="tab-pane fade" id="ingredients" role="tabpanel">
+                <div class="card border-0">
+                    <div class="card-body">
+                        <h5 style="color: var(--mexico-brown);">Inhaltsstoffe</h5>
+                        <p class="text-muted">Vollständige Zutatenliste und Nährwertangaben</p>
+                        <div class="alert alert-info">
+                            <i class="fas fa-info-circle me-2"></i>
+                            Detaillierte Inhaltsstoffangaben finden Sie auf der Produktverpackung.
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="tab-pane fade" id="usage" role="tabpanel">
+                <div class="card border-0">
+                    <div class="card-body">
+                        <h5 style="color: var(--mexico-brown);">Verwendung & Zubereitung</h5>
+                        <p>Tipps und Ideen für die optimale Verwendung dieses Produkts in der mexikanischen Küche.</p>
+                        
+                        <h6 style="color: var(--mexico-brown);">Verwendungstipps:</h6>
+                        <ul>
+                            <li>Ideal für authentische mexikanische Gerichte</li>
+                            <li>Kann in verschiedenen Rezepten verwendet werden</li>
+                            <li>Lagerung an einem kühlen, trockenen Ort</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="tab-pane fade" id="reviews" role="tabpanel">
+                <div class="card border-0">
+                    <div class="card-body">
+                        <h5 style="color: var(--mexico-brown);">Kundenbewertungen</h5>
+                        <div class="mb-4">
+                            <div class="d-flex align-items-center mb-2">
+                                <div class="me-3">
+                                    <span class="h4 mb-0">4.8</span>
+                                    <div>
+                                        <i class="fas fa-star text-warning"></i>
+                                        <i class="fas fa-star text-warning"></i>
+                                        <i class="fas fa-star text-warning"></i>
+                                        <i class="fas fa-star text-warning"></i>
+                                        <i class="fas fa-star text-warning"></i>
+                                    </div>
+                                    <small class="text-muted">24 Bewertungen</small>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Sample Review -->
+                        <div class="border-bottom pb-3 mb-3">
+                            <div class="d-flex justify-content-between align-items-start mb-2">
+                                <div>
+                                    <strong>Maria S.</strong>
+                                    <div>
+                                        <i class="fas fa-star text-warning"></i>
+                                        <i class="fas fa-star text-warning"></i>
+                                        <i class="fas fa-star text-warning"></i>
+                                        <i class="fas fa-star text-warning"></i>
+                                        <i class="fas fa-star text-warning"></i>
+                                    </div>
+                                </div>
+                                <small class="text-muted">vor 2 Wochen</small>
+                            </div>
+                            <p>"Absolut authentisch! Schmeckt genauso wie in Mexiko. Sehr zu empfehlen!"</p>
+                        </div>
+                        
+                        <button class="btn btn-outline-mexico">
+                            <i class="fas fa-plus me-1"></i>Bewertung schreiben
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<script>
+function increaseQuantity() {
+    const input = document.getElementById('quantity');
+    const currentValue = parseInt(input.value);
+    if (currentValue < 10) {
+        input.value = currentValue + 1;
+    }
+}
+
+function decreaseQuantity() {
+    const input = document.getElementById('quantity');
+    const currentValue = parseInt(input.value);
+    if (currentValue > 1) {
+        input.value = currentValue - 1;
+    }
+}
+
+function addToCartDetail(productId) {
+    const quantity = parseInt(document.getElementById('quantity').value);
+    
+    fetch('/api/cart/add', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+            product_id: productId,
+            quantity: quantity
+        })
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            // Show success message
+            const btn = document.querySelector('.btn-mexico');
+            const originalText = btn.innerHTML;
+            btn.innerHTML = '<i class="fas fa-check me-2"></i>Hinzugefügt!';
+            btn.classList.add('btn-success');
+            
+            setTimeout(() => {
+                btn.innerHTML = originalText;
+                btn.classList.remove('btn-success');
+            }, 2000);
+            
+            // Update cart count in navigation if exists
+            updateCartCount(data.cart_count);
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+    });
+}
+
+function updateCartCount(count) {
+    const cartBadge = document.querySelector('.cart-count');
+    if (cartBadge) {
+        cartBadge.textContent = count;
+    }
+}
+</script>
+
+<style>
+.nav-tabs .nav-link {
+    color: var(--mexico-brown);
+    border-color: transparent;
+}
+
+.nav-tabs .nav-link.active {
+    color: var(--mexico-red);
+    border-color: var(--mexico-red) var(--mexico-red) #fff;
+}
+
+.nav-tabs .nav-link:hover {
+    border-color: var(--mexico-cream) var(--mexico-cream) var(--mexico-red);
+    color: var(--mexico-red);
+}
+</style>
+{{end}}

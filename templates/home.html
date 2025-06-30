@@ -1,0 +1,230 @@
+{{define "content"}}
+<!-- Hero Section -->
+<section style="background: linear-gradient(135deg, var(--mexico-red) 0%, var(--mexico-orange) 50%, var(--mexico-green) 100%); color: white; padding: 100px 0; position: relative; overflow: hidden;">
+    <div class="container" style="position: relative; z-index: 1;">
+        <div class="row align-items-center">
+            <div class="col-lg-8 mx-auto text-center">
+                <h1 class="display-3 mb-4 fw-bold">¡Bienvenidos a México Mágico!</h1>
+                <p class="lead mb-4" style="font-size: 1.3rem;">
+                    Von Rodrigos Herzen nach Europa - authentische mexikanische Lebensmittel für alle, die die wahren Aromen Mexikos vermissen
+                </p>
+                <div class="d-flex flex-wrap justify-content-center gap-3 mb-4">
+                    <a href="/products" class="btn btn-light btn-lg px-4 py-3">
+                        <i class="fas fa-shopping-basket me-2"></i>Jetzt entdecken
+                    </a>
+                    <a href="/about" class="btn btn-outline-light btn-lg px-4 py-3">
+                        <i class="fas fa-heart me-2"></i>Unsere Story
+                    </a>
+                </div>
+                <div class="row text-center mt-5">
+                    <div class="col-md-4">
+                        <div class="mb-3">
+                            <i class="fas fa-shipping-fast fa-2x mb-2" style="color: var(--mexico-gold);"></i>
+                            <h5>Kostenloser Versand</h5>
+                            <small>Ab 57€ in Deutschland</small>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="mb-3">
+                            <i class="fas fa-certificate fa-2x mb-2" style="color: var(--mexico-gold);"></i>
+                            <h5>100% Authentisch</h5>
+                            <small>Direkt aus Mexiko</small>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="mb-3">
+                            <i class="fas fa-store fa-2x mb-2" style="color: var(--mexico-gold);"></i>
+                            <h5>Laden in München</h5>
+                            <small>Persönliche Beratung</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- App CTA Banner -->
+{{if .ShowAppCTA}}
+<div style="background: linear-gradient(90deg, var(--mexico-gold), #FFA500); color: var(--mexico-brown); box-shadow: 0 4px 15px rgba(255, 215, 0, 0.3);" class="py-3 text-center">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-md-8">
+                <div class="d-flex align-items-center justify-content-center justify-content-md-start">
+                    <i class="fas fa-mobile-alt fa-2x me-3"></i>
+                    <div class="text-start">
+                        <strong style="font-size: 1.2rem;">México Mágico App verfügbar!</strong>
+                        <div class="small">Exklusive Angebote • Treuepunkte • Push-Alerts</div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 mt-3 mt-md-0">
+                <a href="/app-download" class="btn btn-dark btn-lg px-4">
+                    <i class="fas fa-download me-2"></i>Mehr erfahren
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+{{end}}
+
+<!-- Products Preview -->
+{{if .Products}}
+<section class="py-5">
+    <div class="container">
+        <h2 class="text-center section-title">Unsere Produktkategorien</h2>
+        <p class="text-center text-muted mb-5">Authentische mexikanische Lebensmittel - direkt aus der Heimat von Rodrigo</p>
+        <div class="row">
+            {{range .Products}}
+            <div class="col-md-6 col-lg-3 mb-4">
+                <div class="card h-100 border-0 shadow-sm" style="transition: all 0.3s ease; border-radius: 15px; overflow: hidden; cursor: pointer;" onclick="window.location.href='/product/{{.ID}}'">
+                    <div class="position-relative">
+                        <img src="{{.Image}}" class="card-img-top" alt="{{.Name}}" style="height: 200px; object-fit: cover;">
+                        <span style="background: var(--mexico-green); color: white; padding: 5px 12px; border-radius: 15px; font-size: 0.8rem; font-weight: 600;" class="position-absolute top-0 start-0 m-2">{{.Category}}</span>
+                    </div>
+                    <div class="card-body d-flex flex-column">
+                        <h5 class="card-title">{{.Name}}</h5>
+                        <p class="card-text small">{{.Description}}</p>
+                        <div class="mt-auto">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <span style="background: linear-gradient(135deg, var(--mexico-gold), #FFA500); color: var(--mexico-brown); padding: 8px 15px; border-radius: 20px; font-weight: 700; font-size: 1.1rem; box-shadow: 0 2px 10px rgba(255, 215, 0, 0.3);">{{printf "%.2f" .Price}}€</span>
+                                {{if .InStock}}
+                                <button class="btn btn-mexico btn-sm" onclick="event.stopPropagation(); addToCart({{.ID}})">
+                                    <i class="fas fa-cart-plus"></i> Hinzufügen
+                                </button>
+                                {{else}}
+                                <button class="btn btn-outline-secondary btn-sm" disabled>
+                                    <i class="fas fa-clock"></i> Bald wieder da
+                                </button>
+                                {{end}}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {{end}}
+        </div>
+        <div class="text-center mt-4">
+            <a href="/products" class="btn btn-mexico btn-lg">Alle Produkte entdecken</a>
+        </div>
+    </div>
+</section>
+{{end}}
+
+<!-- Recipes Preview -->
+{{if .Recipes}}
+<section class="py-5 bg-white">
+    <div class="container">
+        <h2 class="text-center section-title">Authentische Rezepte</h2>
+        <p class="text-center text-muted mb-5">Von Rodrigos Abuela bis zu Lisas Lieblingsgerichten - entdecke die wahren Aromen Mexikos</p>
+        <div class="row">
+            {{range .Recipes}}
+            <div class="col-md-4 mb-4">
+                <div class="card h-100 border-0 shadow-sm">
+                    <div class="position-relative">
+                        <img src="{{.Image}}" class="card-img-top" alt="{{.Name}}" style="height: 200px; object-fit: cover;">
+                        <div class="position-absolute top-0 start-0 m-2">
+                            <span class="badge" style="background: var(--mexico-orange); color: white;">
+                                <i class="fas fa-star"></i> Tradicional
+                            </span>
+                        </div>
+                    </div>
+                    <div class="card-body d-flex flex-column">
+                        <h5 class="card-title" style="color: var(--mexico-brown);">{{.Name}}</h5>
+                        <p class="card-text small text-muted">{{.Description}}</p>
+                        <div class="mt-auto">
+                            <div class="d-flex justify-content-between small mb-3">
+                                <span class="text-muted">
+                                    <i class="fas fa-clock" style="color: var(--mexico-orange);"></i> {{.PrepTime}}
+                                </span>
+                                <span class="text-muted">
+                                    <i class="fas fa-chart-bar" style="color: var(--mexico-green);"></i> {{.Difficulty}}
+                                </span>
+                            </div>
+                            <button class="btn btn-outline-mexico btn-sm w-100">
+                                <i class="fas fa-utensils"></i> Rezept ansehen
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {{end}}
+        </div>
+        <div class="text-center mt-4">
+            <a href="/recipes" class="btn btn-mexico btn-lg">
+                <i class="fas fa-book-open"></i> Alle Rezepte entdecken
+            </a>
+        </div>
+    </div>
+</section>
+{{end}}
+
+<!-- Quick Links Section -->
+<section class="py-5 bg-light">
+    <div class="container">
+        <div class="row text-center">
+            <div class="col-md-4 mb-4">
+                <div class="card h-100 border-0 shadow-sm">
+                    <div class="card-body">
+                        <i class="fas fa-heart fa-3x mb-3" style="color: var(--mexico-red);"></i>
+                        <h5>Unsere Geschichte</h5>
+                        <p class="text-muted">Von Mexiko nach München - Rodrigo & Lisa's Liebesgeschichte zu authentischen Aromen.</p>
+                        <a href="/about" class="btn btn-outline-mexico">
+                            <i class="fas fa-arrow-right me-1"></i>Mehr erfahren
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 mb-4">
+                <div class="card h-100 border-0 shadow-sm">
+                    <div class="card-body">
+                        <i class="fas fa-store fa-3x mb-3" style="color: var(--mexico-green);"></i>
+                        <h5>Laden München</h5>
+                        <p class="text-muted">Concept Store in der Maximilianstraße. Persönliche Beratung und authentische Atmosphäre.</p>
+                        <a href="/store-info" class="btn btn-outline-mexico">
+                            <i class="fas fa-map-marker-alt me-1"></i>Adresse & Infos
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 mb-4">
+                <div class="card h-100 border-0 shadow-sm">
+                    <div class="card-body">
+                        <i class="fas fa-mobile-alt fa-3x mb-3" style="color: var(--mexico-orange);"></i>
+                        <h5>México Mágico App</h5>
+                        <p class="text-muted">Treuepunkte sammeln, exklusive Angebote und Mexiko in deiner Hosentasche.</p>
+                        <a href="/app-download" class="btn btn-outline-mexico">
+                            <i class="fas fa-download me-1"></i>App herunterladen
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Newsletter Section -->
+<section class="py-5" style="background: linear-gradient(135deg, var(--mexico-red), var(--mexico-orange));">
+    <div class="container">
+        <div class="row align-items-center text-white text-center">
+            <div class="col-lg-8 mx-auto">
+                <h2 class="mb-3">¡Mantente conectado con México!</h2>
+                <p class="lead mb-4">Erhalten Sie exklusive Angebote, neue Rezepte und als Erste News über Produktneuheiten. Dazu gibt's 10% Willkommensrabatt! 🌶️</p>
+                <form class="row g-3 justify-content-center">
+                    <div class="col-md-6">
+                        <input type="email" class="form-control form-control-lg" placeholder="Ihre E-Mail Adresse" required>
+                    </div>
+                    <div class="col-md-auto">
+                        <button type="submit" class="btn btn-light btn-lg px-4">
+                            <i class="fas fa-paper-plane me-2"></i>Anmelden & 10% sparen
+                        </button>
+                    </div>
+                </form>
+                <small class="text-white-50 mt-3 d-block">
+                    <i class="fas fa-shield-alt me-1"></i>Datenschutz garantiert. Abmeldung jederzeit möglich.
+                </small>
+            </div>
+        </div>
+    </div>
+</section>
+{{end}}
