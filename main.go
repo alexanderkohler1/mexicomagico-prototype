@@ -5,6 +5,7 @@ import (
 	"html/template"
 	"log"
 	"net/http"
+	"os"
 	"strconv"
 )
 
@@ -125,9 +126,13 @@ func main() {
 	http.HandleFunc("/api/cart/add", apiAddToCartHandler)
 	http.HandleFunc("/api/user", apiUserHandler)
 
-	log.Println("Server starting on :8080")
-	log.Println("Visit: http://localhost:8080")
-	log.Fatal(http.ListenAndServe(":8080", nil))
+	port := os.Getenv("PORT")
+	if port == "" {
+		port = "8080"
+	}
+	
+	log.Printf("Server starting on port %s", port)
+	log.Fatal(http.ListenAndServe(":"+port, nil))
 }
 
 func homeHandler(w http.ResponseWriter, r *http.Request) {
