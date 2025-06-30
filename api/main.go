@@ -2,6 +2,7 @@ package handler
 
 import (
 	"encoding/json"
+	"fmt"
 	"html/template"
 	"log"
 	"net/http"
@@ -314,65 +315,233 @@ func apiHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 func renderTemplate(w http.ResponseWriter, templateName string, data PageData) {
-	// Embedded template content - simplified version for Vercel
+	var content string
+	
+	switch templateName {
+	case "home":
+		content = renderHome(data)
+	case "products":
+		content = renderProducts(data)
+	case "recipes":
+		content = renderRecipes(data)
+	case "cart":
+		content = renderCart(data)
+	case "product-detail":
+		content = renderProductDetail(data)
+	case "checkout":
+		content = renderCheckout(data)
+	case "order-confirmation":
+		content = renderOrderConfirmation(data)
+	case "store-info":
+		content = renderStoreInfo(data)
+	case "app-download":
+		content = renderAppDownload(data)
+	case "about":
+		content = renderAbout(data)
+	default:
+		content = renderHome(data)
+	}
+	
+	// Base template with dynamic content
 	baseTemplate := `<!DOCTYPE html>
 <html lang="de">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{{.Title}}</title>
+    <title>` + data.Title + `</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --mexico-red: #C8102E;
+            --mexico-green: #006341;
+            --mexico-gold: #FFD700;
+            --mexico-orange: #FF6B35;
+            --mexico-cream: #FFF8E1;
+            --mexico-brown: #8B4513;
+        }
+        body { font-family: 'Georgia', serif; background-color: var(--mexico-cream); }
+        .navbar { background: linear-gradient(90deg, var(--mexico-cream) 0%, #fff 100%) !important; border-bottom: 3px solid var(--mexico-red); }
+        .navbar-brand { color: var(--mexico-red) !important; font-weight: bold; font-size: 1.8rem; }
+        .btn-mexico { background: linear-gradient(135deg, var(--mexico-red), var(--mexico-orange)); color: white; border: none; border-radius: 25px; }
+        .card:hover { transform: translateY(-5px); transition: all 0.3s ease; }
+    </style>
 </head>
 <body>
-    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <nav class="navbar navbar-expand-lg navbar-light sticky-top">
         <div class="container">
             <a class="navbar-brand" href="/"><i class="fas fa-pepper-hot me-2"></i>México Mágico</a>
-            <div class="navbar-nav">
-                <a class="nav-link" href="/">Home</a>
-                <a class="nav-link" href="/products">Produkte</a>
-                <a class="nav-link" href="/recipes">Rezepte</a>
-                <a class="nav-link" href="/cart">Warenkorb ({{len .Cart}})</a>
+            <div class="navbar-nav me-auto">
+                <a class="nav-link" href="/"><i class="fas fa-home me-1"></i>Home</a>
+                <a class="nav-link" href="/products"><i class="fas fa-shopping-basket me-1"></i>Produkte</a>
+                <a class="nav-link" href="/recipes"><i class="fas fa-utensils me-1"></i>Rezepte</a>
+                <a class="nav-link" href="/store-info"><i class="fas fa-store me-1"></i>Laden</a>
+                <a class="nav-link" href="/app-download"><i class="fas fa-mobile-alt me-1"></i>App</a>
+                <a class="nav-link" href="/about"><i class="fas fa-heart me-1"></i>Story</a>
+            </div>
+            <div class="d-flex">
+                <a href="/cart" class="btn btn-outline-secondary"><i class="fas fa-shopping-cart"></i> (` + fmt.Sprintf("%d", len(data.Cart)) + `)</a>
             </div>
         </div>
     </nav>
-    <main class="container mt-4">
-        <h1>{{.Title}}</h1>
-        {{if eq . "home"}}
-        <p>Willkommen bei México Mágico - Ihre Quelle für authentische mexikanische Lebensmittel!</p>
-        {{else if eq . "products"}}
-        <div class="row">
-            {{range .Products}}
-            <div class="col-md-4 mb-3">
-                <div class="card">
-                    <div class="card-body">
-                        <h5>{{.Name}}</h5>
-                        <p>{{.Description}}</p>
-                        <p class="h6">{{printf "%.2f" .Price}}€</p>
-                    </div>
-                </div>
-            </div>
-            {{end}}
-        </div>
-        {{else}}
-        <p>Seite wird geladen...</p>
-        {{end}}
-    </main>
+    <main>` + content + `</main>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>`
 
-	// Parse and execute template
-	tmpl, err := template.New("base").Parse(baseTemplate)
-	if err != nil {
-		log.Printf("Template parse error: %v", err)
-		http.Error(w, "Template error", http.StatusInternalServerError)
-		return
-	}
+	w.Header().Set("Content-Type", "text/html; charset=utf-8")
+	fmt.Fprint(w, baseTemplate)
+}
 
-	if err := tmpl.Execute(w, data); err != nil {
-		log.Printf("Template execution error: %v", err)
-		http.Error(w, "Template execution error", http.StatusInternalServerError)
-		return
+func renderHome(data PageData) string {
+	content := `
+    <section style="background: linear-gradient(135deg, var(--mexico-red) 0%, var(--mexico-orange) 50%, var(--mexico-green) 100%); color: white; padding: 100px 0;">
+        <div class="container text-center">
+            <h1 class="display-3 mb-4">¡Bienvenidos a México Mágico!</h1>
+            <p class="lead mb-4">Von Rodrigos Herzen nach Europa - authentische mexikanische Lebensmittel</p>
+            <a href="/products" class="btn btn-light btn-lg me-3"><i class="fas fa-shopping-basket me-2"></i>Jetzt entdecken</a>
+            <a href="/about" class="btn btn-outline-light btn-lg"><i class="fas fa-heart me-2"></i>Unsere Story</a>
+        </div>
+    </section>
+    <section class="py-5">
+        <div class="container">
+            <h2 class="text-center mb-5" style="color: var(--mexico-brown);">Unsere Produktkategorien</h2>
+            <div class="row">`
+            
+	for _, product := range data.Products {
+		content += fmt.Sprintf(`
+                <div class="col-md-6 col-lg-3 mb-4">
+                    <div class="card h-100 border-0 shadow-sm" onclick="window.location.href='/product/%d'" style="cursor: pointer;">
+                        <img src="%s" class="card-img-top" alt="%s" style="height: 200px; object-fit: cover;">
+                        <div class="card-body">
+                            <h5>%s</h5>
+                            <p class="small">%s</p>
+                            <div class="d-flex justify-content-between align-items-center">
+                                <span class="h6" style="color: var(--mexico-red);">%.2f€</span>
+                                <button class="btn btn-mexico btn-sm" onclick="event.stopPropagation(); addToCart(%d)">
+                                    <i class="fas fa-cart-plus"></i> Hinzufügen
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>`, product.ID, product.Image, product.Name, product.Name, product.Description, product.Price, product.ID)
 	}
+	
+	content += `
+            </div>
+            <div class="text-center mt-4">
+                <a href="/products" class="btn btn-mexico btn-lg">Alle Produkte entdecken</a>
+            </div>
+        </div>
+    </section>`
+    
+    return content
+}
+
+func renderProducts(data PageData) string {
+	content := `
+    <section style="background: linear-gradient(135deg, var(--mexico-green) 0%, var(--mexico-red) 100%); color: white; padding: 80px 0;">
+        <div class="container text-center">
+            <h1 class="display-4 mb-3">Alle Produkte</h1>
+            <p class="lead">Entdecke die ganze Vielfalt authentischer mexikanischer Lebensmittel</p>
+        </div>
+    </section>
+    <section class="py-5">
+        <div class="container">
+            <div class="row">`
+            
+	for _, product := range data.Products {
+		inStockBadge := ""
+		buttonText := `<button class="btn btn-mexico btn-sm" onclick="addToCart(` + fmt.Sprintf("%d", product.ID) + `)"><i class="fas fa-cart-plus"></i> Hinzufügen</button>`
+		if !product.InStock {
+			inStockBadge = `<span class="badge bg-secondary position-absolute top-0 end-0 m-2">Ausverkauft</span>`
+			buttonText = `<button class="btn btn-outline-secondary btn-sm" disabled><i class="fas fa-clock"></i> Bald wieder da</button>`
+		}
+		
+		content += fmt.Sprintf(`
+            <div class="col-md-6 col-lg-4 col-xl-3 mb-4">
+                <div class="card h-100 border-0 shadow-sm" onclick="window.location.href='/product/%d'" style="cursor: pointer;">
+                    <div class="position-relative">
+                        <img src="%s" class="card-img-top" alt="%s" style="height: 200px; object-fit: cover;">
+                        <span class="badge position-absolute top-0 start-0 m-2" style="background: var(--mexico-green); color: white;">%s</span>
+                        %s
+                    </div>
+                    <div class="card-body d-flex flex-column">
+                        <h5>%s</h5>
+                        <p class="small">%s</p>
+                        <div class="mt-auto">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <span class="h6" style="color: var(--mexico-red);">%.2f€</span>
+                                %s
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>`, product.ID, product.Image, product.Name, product.Category, inStockBadge, product.Name, product.Description, product.Price, buttonText)
+	}
+	
+	content += `
+            </div>
+        </div>
+    </section>`
+    
+    return content
+}
+
+func renderRecipes(data PageData) string {
+	return `<section class="py-5"><div class="container"><h1>Authentische Rezepte</h1><p>Entdecken Sie unsere mexikanischen Rezepte...</p></div></section>`
+}
+
+func renderCart(data PageData) string {
+	if len(data.Cart) == 0 {
+		return `<section class="py-5"><div class="container text-center"><h1>Warenkorb</h1><p>Ihr Warenkorb ist leer.</p><a href="/products" class="btn btn-mexico">Jetzt einkaufen</a></div></section>`
+	}
+	return `<section class="py-5"><div class="container"><h1>Warenkorb</h1><p>Ihre Artikel werden hier angezeigt...</p></div></section>`
+}
+
+func renderProductDetail(data PageData) string {
+	if len(data.Products) == 0 {
+		return `<section class="py-5"><div class="container"><h1>Produkt nicht gefunden</h1></div></section>`
+	}
+	product := data.Products[0]
+	return fmt.Sprintf(`
+    <section class="py-5">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-6">
+                    <img src="%s" class="img-fluid rounded" alt="%s" style="width: 100%%; height: 400px; object-fit: cover;">
+                </div>
+                <div class="col-lg-6">
+                    <h1 style="color: var(--mexico-brown);">%s</h1>
+                    <p class="lead">%s</p>
+                    <div class="mb-4">
+                        <span class="h2" style="color: var(--mexico-red);">%.2f€</span>
+                    </div>
+                    <button class="btn btn-mexico btn-lg" onclick="addToCart(%d)">
+                        <i class="fas fa-cart-plus me-2"></i>In den Warenkorb
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>`, product.Image, product.Name, product.Name, product.Description, product.Price, product.ID)
+}
+
+func renderCheckout(data PageData) string {
+	return `<section class="py-5"><div class="container"><h1>Kasse</h1><p>Checkout-Prozess...</p></div></section>`
+}
+
+func renderOrderConfirmation(data PageData) string {
+	return `<section class="py-5"><div class="container text-center"><h1>Bestellung bestätigt!</h1><p>Vielen Dank für Ihre Bestellung.</p></div></section>`
+}
+
+func renderStoreInfo(data PageData) string {
+	return `<section class="py-5"><div class="container"><h1>Laden München</h1><p>Maximilianstraße 42, 80538 München</p></div></section>`
+}
+
+func renderAppDownload(data PageData) string {
+	return `<section class="py-5"><div class="container text-center"><h1>México Mágico App</h1><p>Jetzt herunterladen und Vorteile sichern!</p></div></section>`
+}
+
+func renderAbout(data PageData) string {
+	return `<section class="py-5"><div class="container"><h1>Unsere Geschichte</h1><p>Von Rodrigo & Lisa - eine Liebesgeschichte zu Mexiko...</p></div></section>`
 }
