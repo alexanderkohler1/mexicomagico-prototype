@@ -1,24 +1,51 @@
 {{define "content"}}
 <!-- Recipes Hero -->
-<section style="background: linear-gradient(135deg, var(--mexico-orange) 0%, var(--mexico-red) 100%); color: white; padding: 80px 0;">
+<section style="background: url('/static/images/hero/hero-background.png') center/cover, linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), linear-gradient(135deg, rgba(200, 16, 46, 0.7) 0%, rgba(255, 107, 53, 0.7) 50%, rgba(0, 99, 65, 0.7) 100%); color: white; padding: 80px 0;">
     <div class="container text-center">
         <h1 class="display-4 mb-3">Authentische Rezepte</h1>
         <p class="lead">Von Rodrigos Abuela bis zu Lisas Lieblingsgerichten - entdecke die wahren Aromen Mexikos</p>
     </div>
 </section>
 
+<!-- Recipe Filter -->
+<section class="py-5" style="background: linear-gradient(135deg, var(--mexico-orange) 0%, var(--mexico-green) 100%);">
+    <div class="container">
+        <!-- Category Filter Buttons -->
+        <div class="text-center mb-5">
+            <h2 class="section-title mb-4" style="color: white; display: block; width: 100%;">Nach Kategorien filtern</h2>
+            <div class="d-flex flex-wrap justify-content-center gap-2" role="group">
+                <button type="button" class="btn btn-light recipe-filter active" data-category="all">
+                    <i class="fas fa-th-large me-1"></i>Alle Rezepte
+                </button>
+                <button type="button" class="btn btn-light recipe-filter" data-category="Hauptgerichte">
+                    <i class="fas fa-utensils me-1"></i>Hauptgerichte
+                </button>
+                <button type="button" class="btn btn-light recipe-filter" data-category="Getränke">
+                    <i class="fas fa-wine-bottle me-1"></i>Getränke
+                </button>
+                <button type="button" class="btn btn-light recipe-filter" data-category="Salsas & Saucen">
+                    <i class="fas fa-pepper-hot me-1"></i>Salsas & Saucen
+                </button>
+                <button type="button" class="btn btn-light recipe-filter" data-category="Desserts">
+                    <i class="fas fa-birthday-cake me-1"></i>Desserts
+                </button>
+            </div>
+        </div>
+    </div>
+</section>
+
 <!-- Recipes Grid -->
 <section class="py-5">
     <div class="container">
-        <div class="row">
+        <div class="row" id="recipes-container">
             {{range .Recipes}}
-            <div class="col-md-6 col-lg-4 mb-4">
+            <div class="col-md-6 col-lg-4 mb-4 recipe-item" data-category="{{.Category}}">
                 <div class="card h-100 border-0 shadow-sm" style="transition: all 0.3s ease; border-radius: 15px; overflow: hidden;">
                     <div class="position-relative">
                         <img src="{{.Image}}" class="card-img-top" alt="{{.Name}}" style="height: 250px; object-fit: cover;">
                         <div class="position-absolute top-0 start-0 m-2">
                             <span class="badge" style="background: var(--mexico-orange); color: white;">
-                                <i class="fas fa-star"></i> Tradicional
+                                <i class="fas fa-utensils"></i> {{.Category}}
                             </span>
                         </div>
                         <div class="position-absolute bottom-0 start-0 end-0 p-3" style="background: linear-gradient(transparent, rgba(0,0,0,0.7));">
@@ -94,50 +121,6 @@
     </div>
 </section>
 
-<!-- Recipe Categories -->
-<section class="py-5 bg-light">
-    <div class="container">
-        <h2 class="text-center section-title mb-5">Rezept-Kategorien</h2>
-        <div class="row">
-            <div class="col-md-3 mb-4">
-                <div class="card text-center border-0 shadow-sm">
-                    <div class="card-body">
-                        <i class="fas fa-cocktail fa-3x mb-3" style="color: var(--mexico-red);"></i>
-                        <h5>Getränke</h5>
-                        <p class="text-muted small">Horchata, Agua Fresca, Cocktails</p>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-3 mb-4">
-                <div class="card text-center border-0 shadow-sm">
-                    <div class="card-body">
-                        <i class="fas fa-bread-slice fa-3x mb-3" style="color: var(--mexico-orange);"></i>
-                        <h5>Hauptgerichte</h5>
-                        <p class="text-muted small">Tacos, Enchiladas, Chiles Rellenos</p>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-3 mb-4">
-                <div class="card text-center border-0 shadow-sm">
-                    <div class="card-body">
-                        <i class="fas fa-pepper-hot fa-3x mb-3" style="color: var(--mexico-green);"></i>
-                        <h5>Salsas & Saucen</h5>
-                        <p class="text-muted small">Salsas, Mole, Marinaden</p>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-3 mb-4">
-                <div class="card text-center border-0 shadow-sm">
-                    <div class="card-body">
-                        <i class="fas fa-birthday-cake fa-3x mb-3" style="color: var(--mexico-gold);"></i>
-                        <h5>Desserts</h5>
-                        <p class="text-muted small">Churros, Flan, Tres Leches</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</section>
 
 <style>
 .card:hover {
@@ -148,5 +131,44 @@
 .badge {
     font-size: 0.75rem;
 }
+
+/* Recipe Filter Functionality */
+.recipe-item {
+    transition: all 0.3s ease;
+}
+
+.recipe-item.hidden {
+    display: none !important;
+}
 </style>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Recipe filter functionality
+    const filterButtons = document.querySelectorAll('.recipe-filter');
+    const recipeItems = document.querySelectorAll('.recipe-item');
+
+    filterButtons.forEach(button => {
+        button.addEventListener('click', function() {
+            const category = this.getAttribute('data-category');
+            
+            // Update active button
+            filterButtons.forEach(btn => btn.classList.remove('active'));
+            this.classList.add('active');
+            
+            // Filter recipes
+            recipeItems.forEach(item => {
+                const itemCategory = item.getAttribute('data-category');
+                
+                if (category === 'all' || itemCategory === category) {
+                    item.classList.remove('hidden');
+                } else {
+                    item.classList.add('hidden');
+                }
+            });
+        });
+    });
+});
+</script>
+
 {{end}}

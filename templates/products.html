@@ -1,6 +1,6 @@
 {{define "content"}}
 <!-- Products Hero -->
-<section style="background: linear-gradient(135deg, var(--mexico-green) 0%, var(--mexico-red) 100%); color: white; padding: 80px 0;">
+<section style="background: url('/static/images/hero/hero-background.png') center/cover, linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), linear-gradient(135deg, rgba(200, 16, 46, 0.7) 0%, rgba(255, 107, 53, 0.7) 50%, rgba(0, 99, 65, 0.7) 100%); color: white; padding: 80px 0;">
     <div class="container text-center">
         <h1 class="display-4 mb-3">Alle Produkte</h1>
         <p class="lead">Entdecke die ganze Vielfalt authentischer mexikanischer Lebensmittel</p>
@@ -8,28 +8,28 @@
 </section>
 
 <!-- Products with Filter -->
-<section class="py-5">
+<section class="py-5" style="background: linear-gradient(135deg, var(--mexico-orange) 0%, var(--mexico-green) 100%);">
     <div class="container">
         <!-- Category Filter Buttons -->
         <div class="text-center mb-5">
-            <h2 class="section-title mb-4">Nach Kategorien filtern</h2>
+            <h2 class="section-title mb-4" style="color: white;">Nach Kategorien filtern</h2>
             <div class="btn-group flex-wrap" role="group">
-                <button type="button" class="btn btn-outline-mexico category-filter active" data-category="all">
+                <button type="button" class="btn btn-light category-filter active" data-category="all">
                     <i class="fas fa-th-large me-1"></i>Alle Kategorien
                 </button>
-                <button type="button" class="btn btn-outline-mexico category-filter" data-category="Getränke">
+                <button type="button" class="btn btn-light category-filter" data-category="Getränke">
                     <i class="fas fa-wine-bottle me-1"></i>Getränke
                 </button>
-                <button type="button" class="btn btn-outline-mexico category-filter" data-category="Basis & Grundzutaten">
+                <button type="button" class="btn btn-light category-filter" data-category="Basis & Grundzutaten">
                     <i class="fas fa-seedling me-1"></i>Basis & Grundzutaten
                 </button>
-                <button type="button" class="btn btn-outline-mexico category-filter" data-category="Salsas & Saucen">
+                <button type="button" class="btn btn-light category-filter" data-category="Salsas & Saucen">
                     <i class="fas fa-pepper-hot me-1"></i>Salsas & Saucen
                 </button>
-                <button type="button" class="btn btn-outline-mexico category-filter" data-category="Gewürze & Chilis">
+                <button type="button" class="btn btn-light category-filter" data-category="Gewürze & Chilis">
                     <i class="fas fa-mortar-pestle me-1"></i>Gewürze & Chilis
                 </button>
-                <button type="button" class="btn btn-outline-mexico category-filter" data-category="Süßes & Snacks">
+                <button type="button" class="btn btn-light category-filter" data-category="Süßes & Snacks">
                     <i class="fas fa-candy-cane me-1"></i>Süßes & Snacks
                 </button>
             </div>

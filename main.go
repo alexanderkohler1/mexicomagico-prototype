@@ -43,6 +43,7 @@ type Recipe struct {
 	Difficulty  string   `json:"difficulty"`
 	Image       string   `json:"image"`
 	Ingredients []string `json:"ingredients"`
+	Category    string   `json:"category"`
 }
 
 // PageData contains data for template rendering
@@ -65,7 +66,7 @@ var products = []Product{
 	{4, "Pulque Tradicional", "Fermentierter Agavensaft, mild alkoholisch", 8.90, "https://mexicomagico.de/cdn/shop/files/400CONEJOS.jpg?v=1733329402&width=400", "Getränke", true},
 
 	// Basis & Grundzutaten
-	{5, "Corn Tortillas (12 Stk)", "Traditionelle Maistortillas, handgemacht", 4.50, "https://mexicomagico.de/cdn/shop/files/yellow-tortillas.jpg?v=1683208957&width=400", "Basis & Grundzutaten", true},
+	{5, "Frische Maistortillas aus Nixtamal 15cm ca. 10 Stk. Glutenfrei (Hinweise bitte lesen)", "Traditionelle Maistortillas, handgemacht", 4.69, "https://mexicomagico.de/cdn/shop/files/yellow-tortillas.jpg?v=1683208957&width=400", "Basis & Grundzutaten", true},
 	{6, "Masa Harina", "Spezialmehl für Tortillas und Tamales", 6.90, "https://mexicomagico.de/cdn/shop/files/maseca-flour.jpg?v=1683208957&width=400", "Basis & Grundzutaten", true},
 	{7, "Frijoles Negros", "Schwarze Bohnen in Dose, Bio-Qualität", 2.90, "https://mexicomagico.de/cdn/shop/files/black-beans.jpg?v=1683208957&width=400", "Basis & Grundzutaten", true},
 	{8, "Nopal Kaktusblätter", "Eingelegte Kaktusblätter, reich an Nährstoffen", 8.90, "https://mexicomagico.de/cdn/shop/files/refried-black-beans.jpg?v=1683208957&width=400", "Basis & Grundzutaten", true},
@@ -94,12 +95,12 @@ var products = []Product{
 }
 
 var recipes = []Recipe{
-	{1, "Guacamole Tradicional", "Cremiger Avocado-Dip mit Limette und Koriander", "15 Min", "Einfach", "https://via.placeholder.com/350x250/FFF8E1/8B4513?text=Guacamole", []string{"3 reife Avocados", "2 Limetten", "1 kleine Zwiebel", "2 Tomaten", "Koriander", "Salz"}},
-	{2, "Tacos al Pastor", "Würzige Schweinefleisch-Tacos mit Ananas", "45 Min", "Mittel", "https://via.placeholder.com/350x250/FFF8E1/8B4513?text=Tacos+al+Pastor", []string{"500g Schweinefleisch", "Corn Tortillas", "Ananas", "Zwiebeln", "Salsa Verde", "Koriander"}},
-	{3, "Quesadillas con Nopal", "Käse-Quesadillas mit Kaktusblättern", "20 Min", "Einfach", "https://via.placeholder.com/350x250/FFF8E1/8B4513?text=Quesadillas", []string{"Tortillas", "Käse", "Nopal Kaktusblätter", "Zwiebeln", "Gewürze"}},
-	{4, "Chiles Rellenos", "Gefüllte Chilis mit Käse", "60 Min", "Schwer", "https://via.placeholder.com/350x250/FFF8E1/8B4513?text=Chiles+Rellenos", []string{"Poblano Chilis", "Käse", "Eier", "Mehl", "Dried Chili Mix"}},
-	{5, "Mole Poblano", "Komplexe Schokoladen-Chili-Sauce", "2 Std", "Schwer", "https://via.placeholder.com/350x250/FFF8E1/8B4513?text=Mole+Poblano", []string{"Verschiedene Chilis", "Schokolade", "Nüsse", "Gewürze", "Hühnerbrühe"}},
-	{6, "Horchata Casera", "Selbstgemachte Reis-Zimt-Milch", "30 Min", "Einfach", "https://via.placeholder.com/350x250/FFF8E1/8B4513?text=Horchata", []string{"Reis", "Zimt", "Milch", "Zucker", "Vanille"}},
+	{1, "Guacamole Tradicional", "Cremiger Avocado-Dip mit Limette und Koriander", "15 Min", "Einfach", "https://via.placeholder.com/350x250/FFF8E1/8B4513?text=Guacamole", []string{"3 reife Avocados", "2 Limetten", "1 kleine Zwiebel", "2 Tomaten", "Koriander", "Salz"}, "Hauptgerichte"},
+	{2, "Tacos al Pastor", "Würzige Schweinefleisch-Tacos mit Ananas", "45 Min", "Mittel", "https://via.placeholder.com/350x250/FFF8E1/8B4513?text=Tacos+al+Pastor", []string{"500g Schweinefleisch", "Corn Tortillas", "Ananas", "Zwiebeln", "Salsa Verde", "Koriander"}, "Hauptgerichte"},
+	{3, "Quesadillas con Nopal", "Käse-Quesadillas mit Kaktusblättern", "20 Min", "Einfach", "https://via.placeholder.com/350x250/FFF8E1/8B4513?text=Quesadillas", []string{"Tortillas", "Käse", "Nopal Kaktusblätter", "Zwiebeln", "Gewürze"}, "Hauptgerichte"},
+	{4, "Chiles Rellenos", "Gefüllte Chilis mit Käse", "60 Min", "Schwer", "https://via.placeholder.com/350x250/FFF8E1/8B4513?text=Chiles+Rellenos", []string{"Poblano Chilis", "Käse", "Eier", "Mehl", "Dried Chili Mix"}, "Hauptgerichte"},
+	{5, "Mole Poblano", "Komplexe Schokoladen-Chili-Sauce", "2 Std", "Schwer", "https://via.placeholder.com/350x250/FFF8E1/8B4513?text=Mole+Poblano", []string{"Verschiedene Chilis", "Schokolade", "Nüsse", "Gewürze", "Hühnerbrühe"}, "Salsas & Saucen"},
+	{6, "Horchata Casera", "Selbstgemachte Reis-Zimt-Milch", "30 Min", "Einfach", "https://via.placeholder.com/350x250/FFF8E1/8B4513?text=Horchata", []string{"Reis", "Zimt", "Milch", "Zucker", "Vanille"}, "Getränke"},
 }
 
 var currentUser = &User{1, "Maria Schmidt", "maria@example.com", "Stuttgart"}
