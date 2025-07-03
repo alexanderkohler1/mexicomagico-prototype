@@ -59,38 +59,38 @@ type PageData struct {
 // Mock data for demonstration - 5 Hauptkategorien
 var products = []Product{
 	// Getränke
-	{1, "Mezcal Artesanal", "Handgefertigter Premium Mezcal aus Oaxaca", 64.90, "/static/images/products/mezcal-artesanal.jpg", "Getränke", true},
-	{2, "Tequila Blanco", "100% Agave Tequila, kristallklar und rein", 49.90, "https://via.placeholder.com/300x200/E8F5E8/2D5016?text=Tequila+Blanco", "Getränke", true},
+	{1, "Mezcal Artesanal", "Handgefertigter Premium Mezcal aus Oaxaca", 64.90, "https://mexicomagico.de/cdn/shop/files/400CONEJOS.jpg?v=1733329402&width=400", "Getränke", true},
+	{2, "Tequila Blanco", "100% Agave Tequila, kristallklar und rein", 49.90, "https://mexicomagico.de/cdn/shop/files/Tequila-1800-Blanco-Silver-700ml-_1.png?v=1683208957&width=400", "Getränke", true},
 	{3, "Horchata de Arroz", "Traditionelles Reisgetränk mit Zimt", 3.50, "https://via.placeholder.com/300x200/E8F5E8/2D5016?text=Horchata", "Getränke", true},
-	{4, "Pulque Tradicional", "Fermentierter Agavensaft, mild alkoholisch", 8.90, "https://via.placeholder.com/300x200/E8F5E8/2D5016?text=Pulque", "Getränke", true},
+	{4, "Pulque Tradicional", "Fermentierter Agavensaft, mild alkoholisch", 8.90, "https://mexicomagico.de/cdn/shop/files/400CONEJOS.jpg?v=1733329402&width=400", "Getränke", true},
 
 	// Basis & Grundzutaten
-	{5, "Corn Tortillas (12 Stk)", "Traditionelle Maistortillas, handgemacht", 4.50, "https://via.placeholder.com/300x200/F5E8D0/8B4513?text=Tortillas", "Basis & Grundzutaten", true},
-	{6, "Masa Harina", "Spezialmehl für Tortillas und Tamales", 6.90, "https://via.placeholder.com/300x200/F5E8D0/8B4513?text=Masa+Harina", "Basis & Grundzutaten", true},
-	{7, "Frijoles Negros", "Schwarze Bohnen in Dose, Bio-Qualität", 2.90, "https://via.placeholder.com/300x200/F5E8D0/8B4513?text=Frijoles", "Basis & Grundzutaten", true},
-	{8, "Nopal Kaktusblätter", "Eingelegte Kaktusblätter, reich an Nährstoffen", 8.90, "https://via.placeholder.com/300x200/F5E8D0/8B4513?text=Nopal", "Basis & Grundzutaten", true},
-	{9, "Chayote", "Exotisches Kürbisgewächs aus Mexiko", 3.50, "https://via.placeholder.com/300x200/F5E8D0/8B4513?text=Chayote", "Basis & Grundzutaten", true},
+	{5, "Corn Tortillas (12 Stk)", "Traditionelle Maistortillas, handgemacht", 4.50, "https://mexicomagico.de/cdn/shop/files/yellow-tortillas.jpg?v=1683208957&width=400", "Basis & Grundzutaten", true},
+	{6, "Masa Harina", "Spezialmehl für Tortillas und Tamales", 6.90, "https://mexicomagico.de/cdn/shop/files/maseca-flour.jpg?v=1683208957&width=400", "Basis & Grundzutaten", true},
+	{7, "Frijoles Negros", "Schwarze Bohnen in Dose, Bio-Qualität", 2.90, "https://mexicomagico.de/cdn/shop/files/black-beans.jpg?v=1683208957&width=400", "Basis & Grundzutaten", true},
+	{8, "Nopal Kaktusblätter", "Eingelegte Kaktusblätter, reich an Nährstoffen", 8.90, "https://mexicomagico.de/cdn/shop/files/refried-black-beans.jpg?v=1683208957&width=400", "Basis & Grundzutaten", true},
+	{9, "Chayote", "Exotisches Kürbisgewächs aus Mexiko", 3.50, "https://mexicomagico.de/cdn/shop/files/chipotle-beans.jpg?v=1683208957&width=400", "Basis & Grundzutaten", true},
 
 	// Salsas & Saucen
-	{10, "Salsa Verde", "Grüne Tomatillo-Salsa, mittelscharf", 6.90, "https://via.placeholder.com/300x200/FFE8E8/C8102E?text=Salsa+Verde", "Salsas & Saucen", true},
+	{10, "Salsa Verde", "Grüne Tomatillo-Salsa, mittelscharf", 6.90, "https://mexicomagico.de/cdn/shop/files/herdez-green.jpg?v=1683208957&width=400", "Salsas & Saucen", true},
 	{11, "Salsa Roja", "Rote Tomaten-Salsa, scharf", 6.90, "https://via.placeholder.com/300x200/FFE8E8/C8102E?text=Salsa+Roja", "Salsas & Saucen", true},
-	{12, "Salsa Macha", "Nuss-Chili-Öl, premium handgemacht", 12.90, "https://via.placeholder.com/300x200/FFE8E8/C8102E?text=Salsa+Macha", "Salsas & Saucen", true},
-	{13, "Mole Poblano", "Komplexe Schokoladen-Chili-Sauce", 18.90, "https://via.placeholder.com/300x200/FFE8E8/C8102E?text=Mole+Poblano", "Salsas & Saucen", true},
+	{12, "Salsa Macha", "Nuss-Chili-Öl, premium handgemacht", 12.90, "https://mexicomagico.de/cdn/shop/files/cholula-original.jpg?v=1683208957&width=400", "Salsas & Saucen", true},
+	{13, "Mole Poblano", "Komplexe Schokoladen-Chili-Sauce", 18.90, "https://mexicomagico.de/cdn/shop/files/dona-maria-mole.jpg?v=1683208957&width=400", "Salsas & Saucen", true},
 	{14, "Chipotle en Adobo", "Geräucherte Jalapeños in Adobo-Sauce", 4.90, "https://via.placeholder.com/300x200/FFE8E8/C8102E?text=Chipotle", "Salsas & Saucen", true},
 
 	// Gewürze & Chilis
-	{15, "Dried Chili Mix", "Verschiedene getrocknete Chilis aus Mexiko", 12.90, "https://via.placeholder.com/300x200/E8FFE8/006341?text=Chili+Mix", "Gewürze & Chilis", false},
-	{16, "Epazote", "Traditionelles mexikanisches Kraut", 3.90, "https://via.placeholder.com/300x200/E8FFE8/006341?text=Epazote", "Gewürze & Chilis", true},
-	{17, "Achiote Paste", "Rote Gewürzmischung aus Yucatán", 7.90, "https://via.placeholder.com/300x200/E8FFE8/006341?text=Achiote", "Gewürze & Chilis", true},
+	{15, "Dried Chili Mix", "Verschiedene getrocknete Chilis aus Mexiko", 12.90, "https://mexicomagico.de/cdn/shop/files/Oregano-para-pozole-20147-_1.jpg?v=1683208957&width=400", "Gewürze & Chilis", false},
+	{16, "Epazote", "Traditionelles mexikanisches Kraut", 3.90, "https://mexicomagico.de/cdn/shop/products/20513.jpg?v=1683208957&width=400", "Gewürze & Chilis", true},
+	{17, "Achiote Paste", "Rote Gewürzmischung aus Yucatán", 7.90, "https://mexicomagico.de/cdn/shop/files/Achiote.jpg?v=1683208957&width=400", "Gewürze & Chilis", true},
 	{18, "Tajín Clásico", "Chili-Limetten-Gewürz, der Klassiker", 4.50, "https://via.placeholder.com/300x200/E8FFE8/006341?text=Tajin", "Gewürze & Chilis", true},
 	{19, "Flor de Sal", "Meersalz aus Guerrero", 8.90, "https://via.placeholder.com/300x200/E8FFE8/006341?text=Flor+de+Sal", "Gewürze & Chilis", true},
 
 	// Süßes & Snacks
-	{20, "Chocolate Abuelita", "Mexikanische Trinkschokolade mit Zimt", 4.90, "https://via.placeholder.com/300x200/FFF8E8/FF6B35?text=Chocolate", "Süßes & Snacks", true},
+	{20, "Chocolate Abuelita", "Mexikanische Trinkschokolade mit Zimt", 4.90, "/static/images/products/Chocolate Abuelita.png", "Süßes & Snacks", true},
 	{21, "Dulce de Leche", "Karamellcreme nach mexikanischer Art", 6.50, "https://via.placeholder.com/300x200/FFF8E8/FF6B35?text=Dulce+de+Leche", "Süßes & Snacks", true},
-	{22, "Tamarindo Candy", "Süß-saure Tamarinden-Süßigkeit", 2.90, "https://via.placeholder.com/300x200/FFF8E8/FF6B35?text=Tamarindo", "Süßes & Snacks", true},
+	{22, "Pulparindo Süßigkeit von De La Rosa 280g (20 St.)", "Süß-saure Tamarinden-Süßigkeit", 7.90, "https://mexicomagico.de/cdn/shop/files/FotosProductos_16.png?v=1683208957&width=400", "Süßes & Snacks", true},
 	{23, "Churros Mix", "Fertigmischung für klassische Churros", 5.90, "https://via.placeholder.com/300x200/FFF8E8/FF6B35?text=Churros+Mix", "Süßes & Snacks", true},
-	{24, "Mazapán Mexicano", "Traditionelle Erdnuss-Süßigkeit", 3.50, "https://via.placeholder.com/300x200/FFF8E8/FF6B35?text=Mazapan", "Süßes & Snacks", true},
+	{24, "Mazapán Mexicano", "Traditionelle Erdnuss-Süßigkeit", 3.50, "https://mexicomagico.de/cdn/shop/files/61cZu9RfZgL._SL1500.jpg?v=1683208957&width=400", "Süßes & Snacks", true},
 }
 
 var recipes = []Recipe{

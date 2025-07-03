@@ -129,6 +129,96 @@
         footer {
             background: linear-gradient(135deg, var(--mexico-brown) 0%, #5D4037 100%);
         }
+
+        /* Newsletter Popup Sticker */
+        .newsletter-popup {
+            position: fixed;
+            left: 20px;
+            bottom: 20px;
+            background: linear-gradient(135deg, var(--mexico-red) 0%, var(--mexico-orange) 100%);
+            color: white;
+            border-radius: 20px;
+            padding: 25px;
+            box-shadow: 0 8px 25px rgba(200, 16, 46, 0.4);
+            z-index: 1000;
+            width: 320px;
+            display: none;
+            animation: slideIn 0.5s ease-out;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateX(-100%);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        .newsletter-popup .close-btn {
+            position: absolute;
+            top: 10px;
+            right: 15px;
+            background: none;
+            border: none;
+            color: white;
+            font-size: 20px;
+            cursor: pointer;
+            opacity: 0.7;
+            transition: opacity 0.3s;
+        }
+
+        .newsletter-popup .close-btn:hover {
+            opacity: 1;
+        }
+
+        .newsletter-popup h4 {
+            margin-bottom: 10px;
+            font-weight: bold;
+        }
+
+        .newsletter-popup p {
+            font-size: 14px;
+            margin-bottom: 15px;
+            line-height: 1.4;
+        }
+
+        .newsletter-popup .input-group {
+            margin-bottom: 10px;
+        }
+
+        .newsletter-popup input {
+            border: none;
+            border-radius: 10px;
+            padding: 12px;
+            margin-bottom: 10px;
+            width: 100%;
+            font-size: 14px;
+        }
+
+        .newsletter-popup .btn-newsletter {
+            background: white;
+            color: var(--mexico-red);
+            border: none;
+            border-radius: 10px;
+            padding: 12px 20px;
+            width: 100%;
+            font-weight: bold;
+            transition: all 0.3s;
+        }
+
+        .newsletter-popup .btn-newsletter:hover {
+            background: var(--mexico-cream);
+            transform: translateY(-2px);
+        }
+
+        .newsletter-popup .privacy-note {
+            font-size: 11px;
+            opacity: 0.8;
+            margin-top: 10px;
+        }
     </style>
 </head>
 <body>
@@ -143,11 +233,6 @@
             </button>
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav me-auto">
-                    <li class="nav-item">
-                        <a class="nav-link" href="/" data-page="home">
-                            <i class="fas fa-home me-1"></i>Home
-                        </a>
-                    </li>
                     <li class="nav-item">
                         <a class="nav-link" href="/products" data-page="products">
                             <i class="fas fa-shopping-basket me-1"></i>Produkte
@@ -199,6 +284,19 @@
         {{template "content" .}}
     </main>
 
+    <!-- Newsletter Popup Sticker -->
+    <div id="newsletterPopup" class="newsletter-popup">
+        <button class="close-btn" onclick="closeNewsletterPopup()">×</button>
+        <h4>Newsletter anmelden</h4>
+        <p>Jetzt anmelden und 10% Rabatt sichern! 🌶️</p>
+        <form onsubmit="subscribeNewsletter(event)">
+            <input type="email" placeholder="E-Mail Adresse eingeben" required>
+            <button type="submit" class="btn-newsletter">
+                <i class="fas fa-envelope me-2"></i>Anmelden
+            </button>
+        </form>
+    </div>
+
     <!-- Footer -->
     <footer class="text-light py-5">
         <div class="container">
@@ -241,11 +339,11 @@
                     </p>
                     <p class="mb-2">
                         <i class="fas fa-phone me-2" style="color: var(--mexico-orange);"></i>
-                        +49 (0) 89 123 456 78
+                        017671690558
                     </p>
                     <p class="mb-2">
                         <i class="fas fa-map-marker-alt me-2" style="color: var(--mexico-orange);"></i>
-                        Maximilianstraße 42, 80538 München
+                        Türkenstraße 96, 80799 München
                     </p>
                     <p class="small text-white-50">
                         <i class="fas fa-clock me-1"></i>Mo-Fr: 10:00-18:00, Sa: 10:00-16:00, So: Geschlossen
@@ -255,7 +353,7 @@
             <hr style="border-color: var(--mexico-orange);">
             <div class="row align-items-center">
                 <div class="col-md-6">
-                    <small class="text-white-50">© 2024 México Mágico. Alle Rechte vorbehalten.</small>
+                    <small class="text-white-50">© 2024 México Mágico - Rochin Garcia & Rochin Garcia GbR. Alle Rechte vorbehalten.</small>
                 </div>
                 <div class="col-md-6 text-md-end">
                     <small>
@@ -282,6 +380,39 @@
                 }
             });
         });
+
+        // Newsletter Popup funktionalität
+        let newsletterTimer;
+
+        function showNewsletterPopup() {
+            const popup = document.getElementById('newsletterPopup');
+            popup.style.display = 'block';
+        }
+
+        function closeNewsletterPopup() {
+            const popup = document.getElementById('newsletterPopup');
+            popup.style.display = 'none';
+            
+            // Nach 1 Minute (60000 ms) wieder anzeigen
+            clearTimeout(newsletterTimer);
+            newsletterTimer = setTimeout(showNewsletterPopup, 60000);
+        }
+
+        function subscribeNewsletter(event) {
+            event.preventDefault();
+            const email = event.target.querySelector('input[type="email"]').value;
+            
+            // Hier würde normalerweise die E-Mail an den Server gesendet
+            alert('Vielen Dank! Sie wurden erfolgreich angemeldet und erhalten Ihren 10% Rabattcode per E-Mail.');
+            
+            // Popup dauerhaft schließen nach erfolgreicher Anmeldung
+            const popup = document.getElementById('newsletterPopup');
+            popup.style.display = 'none';
+            clearTimeout(newsletterTimer);
+        }
+
+        // Timer für 10 Sekunden beim ersten Laden (10000 ms)
+        newsletterTimer = setTimeout(showNewsletterPopup, 10000);
 
         // Shopping cart functionality
         function addToCart(productId) {

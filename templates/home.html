@@ -1,43 +1,48 @@
 {{define "content"}}
 <!-- Hero Section -->
-<section style="background: linear-gradient(135deg, var(--mexico-red) 0%, var(--mexico-orange) 50%, var(--mexico-green) 100%); color: white; padding: 100px 0; position: relative; overflow: hidden;">
-    <div class="container" style="position: relative; z-index: 1;">
-        <div class="row align-items-center">
+<section style="background: url('/static/images/hero/hero-background.png') center/cover, linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), linear-gradient(135deg, rgba(200, 16, 46, 0.7) 0%, rgba(255, 107, 53, 0.7) 50%, rgba(0, 99, 65, 0.7) 100%); color: white; padding: 0; position: relative; overflow: hidden; height: 80vh;">
+    <!-- Hauptinhalt absolut oben -->
+    <div class="container" style="position: absolute; top: 20px; left: 50%; transform: translateX(-50%); z-index: 1; width: 100%;">
+        <div class="row">
             <div class="col-lg-8 mx-auto text-center">
                 <h1 class="display-3 mb-4 fw-bold">¡Bienvenidos a México Mágico!</h1>
-                <p class="lead mb-4" style="font-size: 1.3rem;">
+                <p class="lead mb-5" style="font-size: 1.3rem;">
                     Von Rodrigos Herzen nach Europa - authentische mexikanische Lebensmittel für alle, die die wahren Aromen Mexikos vermissen
                 </p>
-                <div class="d-flex flex-wrap justify-content-center gap-3 mb-4">
+                <div class="d-flex flex-wrap justify-content-center gap-4 mb-4" style="margin-top: 40px;">
                     <a href="/products" class="btn btn-light btn-lg px-4 py-3">
                         <i class="fas fa-shopping-basket me-2"></i>Jetzt entdecken
                     </a>
-                    <a href="/about" class="btn btn-outline-light btn-lg px-4 py-3">
+                    <a href="/about" class="btn btn-light btn-lg px-4 py-3">
                         <i class="fas fa-heart me-2"></i>Unsere Story
                     </a>
                 </div>
-                <div class="row text-center mt-5">
-                    <div class="col-md-4">
-                        <div class="mb-3">
-                            <i class="fas fa-shipping-fast fa-2x mb-2" style="color: var(--mexico-gold);"></i>
-                            <h5>Kostenloser Versand</h5>
-                            <small>Ab 57€ in Deutschland</small>
-                        </div>
-                    </div>
-                    <div class="col-md-4">
-                        <div class="mb-3">
-                            <i class="fas fa-certificate fa-2x mb-2" style="color: var(--mexico-gold);"></i>
-                            <h5>100% Authentisch</h5>
-                            <small>Direkt aus Mexiko</small>
-                        </div>
-                    </div>
-                    <div class="col-md-4">
-                        <div class="mb-3">
-                            <i class="fas fa-store fa-2x mb-2" style="color: var(--mexico-gold);"></i>
-                            <h5>Laden in München</h5>
-                            <small>Persönliche Beratung</small>
-                        </div>
-                    </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Features absolut unten -->
+    <div class="container" style="position: absolute; bottom: 10px; left: 50%; transform: translateX(-50%); z-index: 1; width: 100%;">
+        <div class="row text-center">
+            <div class="col-md-4">
+                <div class="mb-3">
+                    <i class="fas fa-shipping-fast fa-2x mb-2" style="color: var(--mexico-gold);"></i>
+                    <h5>Kostenloser Versand</h5>
+                    <small>Ab 57€ in Deutschland</small>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="mb-3">
+                    <i class="fas fa-certificate fa-2x mb-2" style="color: var(--mexico-gold);"></i>
+                    <h5>100% Authentisch</h5>
+                    <small>Direkt aus Mexiko</small>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="mb-3">
+                    <i class="fas fa-store fa-2x mb-2" style="color: var(--mexico-gold);"></i>
+                    <h5>Laden in München</h5>
+                    <small>Persönliche Beratung</small>
                 </div>
             </div>
         </div>
@@ -70,16 +75,16 @@
 
 <!-- Products Preview -->
 {{if .Products}}
-<section class="py-5">
+<section class="py-5" style="background: linear-gradient(135deg, var(--mexico-red) 0%, var(--mexico-orange) 50%, var(--mexico-green) 100%);">
     <div class="container">
-        <h2 class="text-center section-title">Unsere Produktkategorien</h2>
-        <p class="text-center text-muted mb-5">Authentische mexikanische Lebensmittel - direkt aus der Heimat von Rodrigo</p>
+        <h2 class="text-center section-title" style="color: white;">Unsere Produktkategorien</h2>
+        <p class="text-center mb-5" style="color: rgba(255, 255, 255, 0.9);">Authentische mexikanische Lebensmittel - direkt aus der Heimat von Rodrigo</p>
         <div class="row">
             {{range .Products}}
-            <div class="col-md-6 col-lg-3 mb-4">
+            <div class="col-12 col-md-6 col-lg-2-4 mb-4" style="flex: 0 0 20%; max-width: 20%;">
                 <div class="card h-100 border-0 shadow-sm" style="transition: all 0.3s ease; border-radius: 15px; overflow: hidden; cursor: pointer;" onclick="window.location.href='/product/{{.ID}}'">
                     <div class="position-relative">
-                        <img src="{{.Image}}" class="card-img-top" alt="{{.Name}}" style="height: 200px; object-fit: cover;">
+                        <img src="{{.Image}}" class="card-img-top" alt="{{.Name}}" style="height: 150px; object-fit: cover;">
                         <span style="background: var(--mexico-green); color: white; padding: 5px 12px; border-radius: 15px; font-size: 0.8rem; font-weight: 600;" class="position-absolute top-0 start-0 m-2">{{.Category}}</span>
                     </div>
                     <div class="card-body d-flex flex-column">
@@ -87,14 +92,14 @@
                         <p class="card-text small">{{.Description}}</p>
                         <div class="mt-auto">
                             <div class="d-flex justify-content-between align-items-center">
-                                <span style="background: linear-gradient(135deg, var(--mexico-gold), #FFA500); color: var(--mexico-brown); padding: 8px 15px; border-radius: 20px; font-weight: 700; font-size: 1.1rem; box-shadow: 0 2px 10px rgba(255, 215, 0, 0.3);">{{printf "%.2f" .Price}}€</span>
+                                <span style="background: linear-gradient(135deg, var(--mexico-gold), #FFA500); color: var(--mexico-brown); padding: 6px 12px; border-radius: 15px; font-weight: 600; font-size: 0.9rem; box-shadow: 0 2px 8px rgba(255, 215, 0, 0.3);">{{printf "%.2f" .Price}}€</span>
                                 {{if .InStock}}
-                                <button class="btn btn-mexico btn-sm" onclick="event.stopPropagation(); addToCart({{.ID}})">
-                                    <i class="fas fa-cart-plus"></i> Hinzufügen
+                                <button class="btn btn-mexico btn-sm" onclick="event.stopPropagation(); addToCart({{.ID}})" style="padding: 8px 12px;">
+                                    <i class="fas fa-cart-plus"></i>
                                 </button>
                                 {{else}}
-                                <button class="btn btn-outline-secondary btn-sm" disabled>
-                                    <i class="fas fa-clock"></i> Bald wieder da
+                                <button class="btn btn-outline-secondary btn-sm" disabled style="padding: 8px 12px;">
+                                    <i class="fas fa-clock"></i>
                                 </button>
                                 {{end}}
                             </div>
@@ -111,53 +116,6 @@
 </section>
 {{end}}
 
-<!-- Recipes Preview -->
-{{if .Recipes}}
-<section class="py-5 bg-white">
-    <div class="container">
-        <h2 class="text-center section-title">Authentische Rezepte</h2>
-        <p class="text-center text-muted mb-5">Von Rodrigos Abuela bis zu Lisas Lieblingsgerichten - entdecke die wahren Aromen Mexikos</p>
-        <div class="row">
-            {{range .Recipes}}
-            <div class="col-md-4 mb-4">
-                <div class="card h-100 border-0 shadow-sm">
-                    <div class="position-relative">
-                        <img src="{{.Image}}" class="card-img-top" alt="{{.Name}}" style="height: 200px; object-fit: cover;">
-                        <div class="position-absolute top-0 start-0 m-2">
-                            <span class="badge" style="background: var(--mexico-orange); color: white;">
-                                <i class="fas fa-star"></i> Tradicional
-                            </span>
-                        </div>
-                    </div>
-                    <div class="card-body d-flex flex-column">
-                        <h5 class="card-title" style="color: var(--mexico-brown);">{{.Name}}</h5>
-                        <p class="card-text small text-muted">{{.Description}}</p>
-                        <div class="mt-auto">
-                            <div class="d-flex justify-content-between small mb-3">
-                                <span class="text-muted">
-                                    <i class="fas fa-clock" style="color: var(--mexico-orange);"></i> {{.PrepTime}}
-                                </span>
-                                <span class="text-muted">
-                                    <i class="fas fa-chart-bar" style="color: var(--mexico-green);"></i> {{.Difficulty}}
-                                </span>
-                            </div>
-                            <button class="btn btn-outline-mexico btn-sm w-100">
-                                <i class="fas fa-utensils"></i> Rezept ansehen
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            {{end}}
-        </div>
-        <div class="text-center mt-4">
-            <a href="/recipes" class="btn btn-mexico btn-lg">
-                <i class="fas fa-book-open"></i> Alle Rezepte entdecken
-            </a>
-        </div>
-    </div>
-</section>
-{{end}}
 
 <!-- Quick Links Section -->
 <section class="py-5 bg-light">
