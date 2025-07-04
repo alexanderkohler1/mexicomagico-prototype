@@ -77,10 +77,10 @@ var products = []Product{
 	{18, "MAIS TOSTADAS VON CHARRAS 325 g", "Knusprige Mais-Tostadas für authentische Gerichte", 6.59, "/static/images/products/MAIS TOSTADAS VON CHARRAS 325 g.png", "Basis & Grundzutaten", true, false, "available", false},
 
 	// Getränke
+	{10, "BOING MANGO SAFT 354 ML", "Natürlicher Mango-Saft aus Mexiko", 3.50, "/static/images/products/BOING MANGO SAFT 354 ML.png", "Getränke", true, false, "available", true},
 	{7, "400 Conejos Mezcal Joven 38% Vol. 0.7 l", "Authentischer Mezcal Joven aus Oaxaca", 49.90, "/static/images/products/400 Conejos Mezcal Joven 38% Vol. 0.7 l.png", "Getränke", true, true, "available", false},
 	{8, "Mezcal Don Ramón Joven 100% Agave Salmiana 40% Vol. 0,7l", "Premium Mezcal aus 100% Agave Salmiana", 52.00, "/static/images/products/Mezcal Don Ramón Joven 100% Agave Salmiana 40% Vol. 0,7l.png", "Getränke", false, true, "coming_soon", false},
 	{9, "MODELO ESPECIAL HELLES BIER 355 ml 4.5% Vol. Alk.", "Authentisches mexikanisches Lagerbier", 3.69, "/static/images/products/MODELO ESPECIAL HELLES BIER 355 ml 4.5% Vol. Alk..png", "Getränke", true, true, "available", false},
-	{10, "BOING MANGO SAFT 354 ML", "Natürlicher Mango-Saft aus Mexiko", 3.50, "/static/images/products/BOING MANGO SAFT 354 ML.png", "Getränke", true, false, "available", true},
 	{11, "HORCHATA KONZENTRAT VON MEXQUISITA 700 ML", "Konzentrat für traditionelle Horchata", 7.60, "/static/images/products/HORCHATA KONZENTRAT VON MEXQUISITA 700 ML.png", "Getränke", false, false, "coming_soon", false},
 
 	// Salsas & Saucen
@@ -134,6 +134,8 @@ func main() {
 	// API endpoints
 	http.HandleFunc("/api/products", apiProductsHandler)
 	http.HandleFunc("/api/cart/add", apiAddToCartHandler)
+	http.HandleFunc("/api/cart/update", apiUpdateCartHandler)
+	http.HandleFunc("/api/cart/remove", apiRemoveFromCartHandler)
 	http.HandleFunc("/api/user", apiUserHandler)
 
 	port := os.Getenv("PORT")
@@ -306,6 +308,72 @@ func apiAddToCartHandler(w http.ResponseWriter, r *http.Request) {
 			Product:  *product,
 			Quantity: reqData.Quantity,
 		})
+	}
+
+	w.Header().Set("Content-Type", "application/json")
+	json.NewEncoder(w).Encode(map[string]interface{}{
+		"success":    true,
+		"cart_count": len(cart),
+	})
+}
+
+func apiUpdateCartHandler(w http.ResponseWriter, r *http.Request) {
+	if r.Method != "POST" {
+		http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
+		return
+	}
+
+	var reqData struct {
+		ProductID int `json:"product_id"`
+		Quantity  int `json:"quantity"`
+	}
+
+	if err := json.NewDecoder(r.Body).Decode(&reqData); err != nil {
+		http.Error(w, "Invalid JSON", http.StatusBadRequest)
+		return
+	}
+
+	// Update quantity in cart
+	for i := range cart {
+		if cart[i].Product.ID == reqData.ProductID {
+			if reqData.Quantity <= 0 {
+				// Remove item if quantity is 0 or less
+				cart = append(cart[:i], cart[i+1:]...)
+			} else {
+				cart[i].Quantity = reqData.Quantity
+			}
+			break
+		}
+	}
+
+	w.Header().Set("Content-Type", "application/json")
+	json.NewEncoder(w).Encode(map[string]interface{}{
+		"success":    true,
+		"cart_count": len(cart),
+	})
+}
+
+func apiRemoveFromCartHandler(w http.ResponseWriter, r *http.Request) {
+	if r.Method != "POST" {
+		http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
+		return
+	}
+
+	var reqData struct {
+		ProductID int `json:"product_id"`
+	}
+
+	if err := json.NewDecoder(r.Body).Decode(&reqData); err != nil {
+		http.Error(w, "Invalid JSON", http.StatusBadRequest)
+		return
+	}
+
+	// Remove item from cart
+	for i := range cart {
+		if cart[i].Product.ID == reqData.ProductID {
+			cart = append(cart[:i], cart[i+1:]...)
+			break
+		}
 	}
 
 	w.Header().Set("Content-Type", "application/json")
