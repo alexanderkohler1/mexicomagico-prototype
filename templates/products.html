@@ -24,7 +24,7 @@
                     <i class="fas fa-seedling me-1"></i>Basis & Grundzutaten
                 </button>
                 <button type="button" class="btn btn-light category-filter" data-category="Salsas & Saucen">
-                    <i class="fas fa-pepper-hot me-1"></i>Salsas & Saucen
+                    <i class="fas fa-pepper-hot me-1"></i>Saucen
                 </button>
                 <button type="button" class="btn btn-light category-filter" data-category="Gewürze & Chilis">
                     <i class="fas fa-mortar-pestle me-1"></i>Gewürze & Chilis
@@ -39,11 +39,15 @@
         <div class="row" id="products-container">
             {{range .Products}}
             <div class="col-md-6 col-lg-4 col-xl-3 mb-4 product-item" data-category="{{.Category}}">
-                <div class="card h-100 border-0 shadow-sm" style="transition: all 0.3s ease; border-radius: 15px; overflow: hidden; cursor: pointer;" onclick="window.location.href='/product/{{.ID}}'">
+                <div class="card h-100 border-0 shadow-sm" style="transition: all 0.3s ease; border-radius: 15px; overflow: hidden; cursor: pointer;" onclick="handleProductClick({{.ID}}, {{.RequiresAgeVerification}})">
                     <div class="position-relative">
                         <img src="{{.Image}}" class="card-img-top" alt="{{.Name}}" style="height: 200px; object-fit: cover;">
                         <span style="background: var(--mexico-green); color: white; padding: 5px 12px; border-radius: 15px; font-size: 0.8rem; font-weight: 600;" class="position-absolute top-0 start-0 m-2">{{.Category}}</span>
-                        {{if not .InStock}}
+                        {{if .IsTopSeller}}
+                        <span class="badge bg-warning text-dark position-absolute top-0 end-0 m-2" style="background: linear-gradient(135deg, #FFD700, #FFA500) !important; font-weight: bold;">
+                            <i class="fas fa-star me-1"></i>Topseller
+                        </span>
+                        {{else if not .InStock}}
                         <span class="badge bg-secondary position-absolute top-0 end-0 m-2">Ausverkauft</span>
                         {{end}}
                     </div>
@@ -54,7 +58,7 @@
                             <div class="d-flex justify-content-between align-items-center">
                                 <span style="background: linear-gradient(135deg, var(--mexico-gold), #FFA500); color: var(--mexico-brown); padding: 8px 15px; border-radius: 20px; font-weight: 700; font-size: 1.1rem; box-shadow: 0 2px 10px rgba(255, 215, 0, 0.3);">{{printf "%.2f" .Price}}€</span>
                                 {{if .InStock}}
-                                <button class="btn btn-mexico btn-sm" onclick="event.stopPropagation(); addToCart({{.ID}})">
+                                <button class="btn btn-mexico btn-sm" onclick="event.stopPropagation(); handleAddToCart({{.ID}}, {{.RequiresAgeVerification}})">
                                     <i class="fas fa-cart-plus"></i> Hinzufügen
                                 </button>
                                 {{else}}
@@ -72,7 +76,123 @@
     </div>
 </section>
 
+<!-- Cart Success Modal with Recommendation -->
+<div class="modal fade" id="cartSuccessModal" tabindex="-1" aria-labelledby="cartSuccessModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content" style="border-radius: 20px; overflow: hidden;">
+            <div class="modal-header text-white" style="background: linear-gradient(135deg, var(--mexico-green), var(--mexico-orange)); border: none;">
+                <h5 class="modal-title" id="cartSuccessModalLabel">
+                    <i class="fas fa-check-circle me-2"></i>Erfolgreich hinzugefügt!
+                </h5>
+                <button type="button" class="btn-close btn-close-white" onclick="closeModal()" aria-label="Close"></button>
+            </div>
+            <div class="modal-body p-4">
+                <div class="text-center mb-4">
+                    <div class="alert alert-success d-flex align-items-center" role="alert">
+                        <i class="fas fa-shopping-cart me-2"></i>
+                        <div id="successMessage">
+                            <strong id="productName"></strong> wurde zum Warenkorb hinzugefügt!
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Recommendation Section -->
+                <div class="recommendation-section">
+                    <h6 class="mb-3" style="color: var(--mexico-brown);">
+                        <i class="fas fa-star me-2"></i>Empfehlung: Probiere auch unsere Tortillas!
+                    </h6>
+                    <div class="card border-0 shadow-sm" style="background: linear-gradient(135deg, var(--mexico-cream), #fff);">
+                        <div class="card-body">
+                            <div class="row align-items-center">
+                                <div class="col-4">
+                                    <img src="/static/images/products/frische Maistortillas aus Nixtamal 15cm ca. 10 Stk. Glutenfrei.png" 
+                                         class="img-fluid rounded" alt="Tortillas" style="height: 80px; width: 80px; object-fit: cover;">
+                                </div>
+                                <div class="col-8">
+                                    <h6 class="mb-1" style="color: var(--mexico-brown);">Frische Maistortillas</h6>
+                                    <p class="small text-muted mb-2">Traditionelle Maistortillas, handgemacht</p>
+                                    <div class="d-flex align-items-center justify-content-between">
+                                        <span class="fw-bold" style="color: var(--mexico-red);">4,69€</span>
+                                        <button class="btn btn-mexico btn-sm" onclick="addRecommendedProduct(17)">
+                                            <i class="fas fa-plus me-1"></i>Hinzufügen
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer border-0 pt-0">
+                <div class="d-flex gap-2 w-100">
+                    <button type="button" class="btn btn-outline-secondary flex-fill" onclick="closeModal()">
+                        <i class="fas fa-shopping-basket me-2"></i>Weiter einkaufen
+                    </button>
+                    <a href="/cart" class="btn btn-mexico flex-fill">
+                        <i class="fas fa-shopping-cart me-2"></i>Zum Warenkorb
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
 <script>
+// Age Verification Functions
+function verifyAge() {
+    return confirm("Sie müssen mindestens 18 Jahre alt sein, um alkoholische Getränke zu kaufen.\n\nSind Sie 18 Jahre oder älter?");
+}
+
+function handleProductClick(productId, requiresAgeVerification) {
+    if (requiresAgeVerification) {
+        if (verifyAge()) {
+            window.location.href = '/product/' + productId;
+        } else {
+            window.location.href = '/';
+        }
+    } else {
+        window.location.href = '/product/' + productId;
+    }
+}
+
+function handleAddToCart(productId, requiresAgeVerification) {
+    if (requiresAgeVerification) {
+        if (verifyAge()) {
+            addToCart(productId);
+        } else {
+            window.location.href = '/';
+        }
+    } else {
+        addToCart(productId);
+    }
+}
+
+// Note: addToCart and closeModal functions are now defined in base.html
+
+// Function to add recommended product
+function addRecommendedProduct(productId) {
+    // Add tortillas to cart
+    const productName = products[productId] || "Tortillas";
+    
+    // Show confirmation
+    const btn = event.target;
+    const originalText = btn.innerHTML;
+    btn.innerHTML = '<i class="fas fa-check me-1"></i>Hinzugefügt!';
+    btn.classList.add('btn-success');
+    btn.classList.remove('btn-mexico');
+    btn.disabled = true;
+    
+    setTimeout(() => {
+        btn.innerHTML = originalText;
+        btn.classList.remove('btn-success');
+        btn.classList.add('btn-mexico');
+        btn.disabled = false;
+    }, 2000);
+    
+    // Here you would also make the API call
+    // fetch('/api/cart/add', { ... })
+}
+
 // Category Filter Functionality
 document.addEventListener('DOMContentLoaded', function() {
     const filterButtons = document.querySelectorAll('.category-filter');

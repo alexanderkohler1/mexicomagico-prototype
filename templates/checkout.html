@@ -117,15 +117,15 @@
                                 </label>
                             </div>
                             <div class="form-check mb-3">
-                                <input class="form-check-input" type="radio" name="shipping" id="express" value="express">
-                                <label class="form-check-label" for="express">
+                                <input class="form-check-input" type="radio" name="shipping" id="pickup" value="pickup">
+                                <label class="form-check-label" for="pickup">
                                     <div class="d-flex justify-content-between">
                                         <div>
-                                            <strong>Express-Versand</strong>
-                                            <br><small class="text-muted">1-2 Werktage</small>
+                                            <strong>Abholung im Laden</strong>
+                                            <br><small class="text-muted">München</small>
                                         </div>
                                         <div>
-                                            <span class="badge" style="background: var(--mexico-orange);">+ 9.90€</span>
+                                            <span class="badge bg-success">+ 0.00€</span>
                                         </div>
                                     </div>
                                 </label>
@@ -312,15 +312,19 @@ document.querySelectorAll('input[name="shipping"]').forEach(radio => {
     radio.addEventListener('change', function() {
         const shippingCost = document.getElementById('shipping-cost');
         const totalCost = document.getElementById('total-cost');
+        const subtotal = {{calculateSubtotal .Cart}};
         
-        if (this.value === 'express') {
-            shippingCost.textContent = '9.90€';
-            // Update total - you'd need to calculate this properly
+        if (this.value === 'pickup') {
+            shippingCost.textContent = 'Kostenlos';
+            totalCost.textContent = subtotal.toFixed(2) + '€';
         } else {
+            // Standard shipping
             {{if ge (calculateSubtotal .Cart) 57.0}}
                 shippingCost.textContent = 'Kostenlos';
+                totalCost.textContent = subtotal.toFixed(2) + '€';
             {{else}}
                 shippingCost.textContent = '4.90€';
+                totalCost.textContent = (subtotal + 4.90).toFixed(2) + '€';
             {{end}}
         }
     });

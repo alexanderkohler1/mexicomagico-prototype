@@ -11,13 +11,16 @@ import (
 
 // Product represents a Mexican food product
 type Product struct {
-	ID          int     `json:"id"`
-	Name        string  `json:"name"`
-	Description string  `json:"description"`
-	Price       float64 `json:"price"`
-	Image       string  `json:"image"`
-	Category    string  `json:"category"`
-	InStock     bool    `json:"in_stock"`
+	ID             int     `json:"id"`
+	Name           string  `json:"name"`
+	Description    string  `json:"description"`
+	Price          float64 `json:"price"`
+	Image          string  `json:"image"`
+	Category       string  `json:"category"`
+	InStock        bool    `json:"in_stock"`
+	RequiresAgeVerification bool `json:"requires_age_verification"`
+	AvailabilityStatus string `json:"availability_status"`
+	IsTopSeller    bool    `json:"is_top_seller"`
 }
 
 // User represents a website user/customer
@@ -36,14 +39,19 @@ type CartItem struct {
 
 // Recipe represents a Mexican recipe
 type Recipe struct {
-	ID          int      `json:"id"`
-	Name        string   `json:"name"`
-	Description string   `json:"description"`
-	PrepTime    string   `json:"prep_time"`
-	Difficulty  string   `json:"difficulty"`
-	Image       string   `json:"image"`
-	Ingredients []string `json:"ingredients"`
-	Category    string   `json:"category"`
+	ID              int      `json:"id"`
+	Name            string   `json:"name"`
+	Description     string   `json:"description"`
+	PrepTime        string   `json:"prep_time"`
+	Difficulty      string   `json:"difficulty"`
+	Image           string   `json:"image"`
+	Ingredients     []string `json:"ingredients"`
+	Category        string   `json:"category"`
+	IsVegan         bool     `json:"is_vegan"`
+	Instructions    []string `json:"instructions"`
+	AboutRecipe     string   `json:"about_recipe"`
+	InStoreIngredients []string `json:"in_store_ingredients"`
+	AdditionalIngredients []string `json:"additional_ingredients"`
 }
 
 // PageData contains data for template rendering
@@ -57,50 +65,50 @@ type PageData struct {
 	ShowAppCTA bool       `json:"show_app_cta"`
 }
 
-// Mock data for demonstration - 5 Hauptkategorien
 var products = []Product{
-	// Getränke
-	{1, "Mezcal Artesanal", "Handgefertigter Premium Mezcal aus Oaxaca", 64.90, "https://mexicomagico.de/cdn/shop/files/400CONEJOS.jpg?v=1733329402&width=400", "Getränke", true},
-	{2, "Tequila Blanco", "100% Agave Tequila, kristallklar und rein", 49.90, "https://mexicomagico.de/cdn/shop/files/Tequila-1800-Blanco-Silver-700ml-_1.png?v=1683208957&width=400", "Getränke", true},
-	{3, "Horchata de Arroz", "Traditionelles Reisgetränk mit Zimt", 3.50, "https://via.placeholder.com/300x200/E8F5E8/2D5016?text=Horchata", "Getränke", true},
-	{4, "Pulque Tradicional", "Fermentierter Agavensaft, mild alkoholisch", 8.90, "https://mexicomagico.de/cdn/shop/files/400CONEJOS.jpg?v=1733329402&width=400", "Getränke", true},
-
 	// Basis & Grundzutaten
-	{5, "Frische Maistortillas aus Nixtamal 15cm ca. 10 Stk. Glutenfrei (Hinweise bitte lesen)", "Traditionelle Maistortillas, handgemacht", 4.69, "https://mexicomagico.de/cdn/shop/files/yellow-tortillas.jpg?v=1683208957&width=400", "Basis & Grundzutaten", true},
-	{6, "Masa Harina", "Spezialmehl für Tortillas und Tamales", 6.90, "https://mexicomagico.de/cdn/shop/files/maseca-flour.jpg?v=1683208957&width=400", "Basis & Grundzutaten", true},
-	{7, "Frijoles Negros", "Schwarze Bohnen in Dose, Bio-Qualität", 2.90, "https://mexicomagico.de/cdn/shop/files/black-beans.jpg?v=1683208957&width=400", "Basis & Grundzutaten", true},
-	{8, "Nopal Kaktusblätter", "Eingelegte Kaktusblätter, reich an Nährstoffen", 8.90, "https://mexicomagico.de/cdn/shop/files/refried-black-beans.jpg?v=1683208957&width=400", "Basis & Grundzutaten", true},
-	{9, "Chayote", "Exotisches Kürbisgewächs aus Mexiko", 3.50, "https://mexicomagico.de/cdn/shop/files/chipotle-beans.jpg?v=1683208957&width=400", "Basis & Grundzutaten", true},
+	{1, "KAKTUSBLÄTTER NOPALES STREIFEN IN SALZLAKE 300g", "Eingelegte Kaktusblätter-Streifen, reich an Nährstoffen", 4.25, "/static/images/products/KAKTUSBLÄTTER NOPALES STREIFEN IN SALZLAKE 300g.jpg", "Basis & Grundzutaten", true, false, "available", true},
+	{2, "GANZE NOPALES KAKTUSBLÄTTER IM BEUTEL VON AZTECA 1kg", "Ganze Kaktusblätter für authentische mexikanische Gerichte", 8.35, "/static/images/products/GANZE NOPALES KAKTUSBLÄTTER IM BEUTEL VON AZTECA 1kg.png", "Basis & Grundzutaten", true, false, "available", false},
+	{3, "Tamal mit Chili Poblano und Käse (Rajas con queso) 300 g (3 St.)", "Traditionelle Tamales mit Poblano-Chili und Käse", 11.49, "/static/images/products/Tamal mit Chili Poblano und Käse (Rajas con queso) 300 g (3 St.).png", "Basis & Grundzutaten", true, false, "available", true},
+	{4, "Chorizoqueso 500g", "Würzige Chorizo-Käse-Mischung", 13.50, "/static/images/products/Chorizoqueso 500g.png", "Basis & Grundzutaten", true, false, "available", false},
+	{5, "Cochinita Pibil (servierfertig) 250g", "Servierfertige Cochinita Pibil aus Yucatán", 9.90, "/static/images/products/Cochinita Pibil (servierfertig) 250g.png", "Basis & Grundzutaten", true, false, "available", false},
+	{16, "Totopos Nixtamal Tortilla-Chips gesalzen 250g", "Authentische Tortilla-Chips aus Nixtamal-Mais", 6.40, "/static/images/products/Totopos Nixtamal Tortilla-Chips gesalzen 250g Authentische Tortilla-Chips aus Nixtamal-Mais.png", "Basis & Grundzutaten", false, false, "coming_soon", false},
+	{17, "frische Maistortillas aus Nixtamal 15cm ca. 10 Stk. Glutenfrei", "Traditionelle Maistortillas, handgemacht", 4.69, "/static/images/products/frische Maistortillas aus Nixtamal 15cm ca. 10 Stk. Glutenfrei.png", "Basis & Grundzutaten", true, false, "available", false},
+	{18, "MAIS TOSTADAS VON CHARRAS 325 g", "Knusprige Mais-Tostadas für authentische Gerichte", 6.59, "/static/images/products/MAIS TOSTADAS VON CHARRAS 325 g.png", "Basis & Grundzutaten", true, false, "available", false},
+
+	// Getränke
+	{7, "400 Conejos Mezcal Joven 38% Vol. 0.7 l", "Authentischer Mezcal Joven aus Oaxaca", 49.90, "/static/images/products/400 Conejos Mezcal Joven 38% Vol. 0.7 l.png", "Getränke", true, true, "available", false},
+	{8, "Mezcal Don Ramón Joven 100% Agave Salmiana 40% Vol. 0,7l", "Premium Mezcal aus 100% Agave Salmiana", 52.00, "/static/images/products/Mezcal Don Ramón Joven 100% Agave Salmiana 40% Vol. 0,7l.png", "Getränke", false, true, "coming_soon", false},
+	{9, "MODELO ESPECIAL HELLES BIER 355 ml 4.5% Vol. Alk.", "Authentisches mexikanisches Lagerbier", 3.69, "/static/images/products/MODELO ESPECIAL HELLES BIER 355 ml 4.5% Vol. Alk..png", "Getränke", true, true, "available", false},
+	{10, "BOING MANGO SAFT 354 ML", "Natürlicher Mango-Saft aus Mexiko", 3.50, "/static/images/products/BOING MANGO SAFT 354 ML.png", "Getränke", true, false, "available", true},
+	{11, "HORCHATA KONZENTRAT VON MEXQUISITA 700 ML", "Konzentrat für traditionelle Horchata", 7.60, "/static/images/products/HORCHATA KONZENTRAT VON MEXQUISITA 700 ML.png", "Getränke", false, false, "coming_soon", false},
 
 	// Salsas & Saucen
-	{10, "Salsa Verde", "Grüne Tomatillo-Salsa, mittelscharf", 6.90, "https://mexicomagico.de/cdn/shop/files/herdez-green.jpg?v=1683208957&width=400", "Salsas & Saucen", true},
-	{11, "Salsa Roja", "Rote Tomaten-Salsa, scharf", 6.90, "https://via.placeholder.com/300x200/FFE8E8/C8102E?text=Salsa+Roja", "Salsas & Saucen", true},
-	{12, "Salsa Macha", "Nuss-Chili-Öl, premium handgemacht", 12.90, "https://mexicomagico.de/cdn/shop/files/cholula-original.jpg?v=1683208957&width=400", "Salsas & Saucen", true},
-	{13, "Mole Poblano", "Komplexe Schokoladen-Chili-Sauce", 18.90, "https://mexicomagico.de/cdn/shop/files/dona-maria-mole.jpg?v=1683208957&width=400", "Salsas & Saucen", true},
-	{14, "Chipotle en Adobo", "Geräucherte Jalapeños in Adobo-Sauce", 4.90, "https://via.placeholder.com/300x200/FFE8E8/C8102E?text=Chipotle", "Salsas & Saucen", true},
+	{12, "SCHARFE SOßE LA BOTANERA CLASICA 1L", "Klassische scharfe Sauce aus Mexiko", 5.99, "/static/images/products/SCHARFE SOße LA BOTANERA CLASICA 1L.png", "Salsas & Saucen", true, false, "available", true},
+	{13, "HABANERO EXTRASCHARFE SOßE VON EL YUCATECO 120ml", "Extrascharfe Habanero-Sauce", 4.49, "/static/images/products/HABANERO EXTRASCHARFE SOße VON EL YUCATECO 120ml.png", "Salsas & Saucen", true, false, "available", false},
+	{14, "Schwarze Habanero Chili Soße El Yucateco 120ml", "Schwarze Habanero-Sauce mit einzigartigem Geschmack", 4.49, "/static/images/products/Schwarze Habanero Chili Soße El Yucateco 120ml.png", "Salsas & Saucen", true, false, "available", false},
+	{15, "VALENTINA EXTRA SCHARFE SAUCE 370ml", "Mexikos beliebteste scharfe Sauce", 3.69, "/static/images/products/VALENTINA EXTRA SCHARFE SAUCE 370ml.png", "Salsas & Saucen", true, false, "available", false},
 
 	// Gewürze & Chilis
-	{15, "Dried Chili Mix", "Verschiedene getrocknete Chilis aus Mexiko", 12.90, "https://mexicomagico.de/cdn/shop/files/Oregano-para-pozole-20147-_1.jpg?v=1683208957&width=400", "Gewürze & Chilis", false},
-	{16, "Epazote", "Traditionelles mexikanisches Kraut", 3.90, "https://mexicomagico.de/cdn/shop/products/20513.jpg?v=1683208957&width=400", "Gewürze & Chilis", true},
-	{17, "Achiote Paste", "Rote Gewürzmischung aus Yucatán", 7.90, "https://mexicomagico.de/cdn/shop/files/Achiote.jpg?v=1683208957&width=400", "Gewürze & Chilis", true},
-	{18, "Tajín Clásico", "Chili-Limetten-Gewürz, der Klassiker", 4.50, "https://via.placeholder.com/300x200/E8FFE8/006341?text=Tajin", "Gewürze & Chilis", true},
-	{19, "Flor de Sal", "Meersalz aus Guerrero", 8.90, "https://via.placeholder.com/300x200/E8FFE8/006341?text=Flor+de+Sal", "Gewürze & Chilis", true},
+	{6, "CHILI ARBOL VON XATZE 75gr", "Getrocknete Chili de Árbol für intensive Schärfe", 5.49, "/static/images/products/CHILI ARBOL VON XATZE.png", "Gewürze & Chilis", true, false, "available", false},
+	{19, "TAJIN CHILI LIMETTEN PULVER 142gr", "Das Original Tajín Gewürz mit Chili und Limette", 3.79, "/static/images/products/TAJIN CHILI LIMETTEN PULVER 142gr.png", "Gewürze & Chilis", true, false, "available", false},
+	{20, "GEWÜRZ FÜR FAJITA - COCHINITA PIBIL 142 g", "Authentische Gewürzmischung für Cochinita Pibil", 5.50, "/static/images/products/GEWÜRZ FÜR FAJITA - COCHINITA PIBIL 142 g.png", "Gewürze & Chilis", true, false, "available", false},
+	{21, "MEXIKANISCHER OREGANO (GEWÜRZ) VON XATZE 20gr", "Echter mexikanischer Oregano", 3.99, "https://mexicomagico.de/cdn/shop/files/Oregano-para-pozole-20147-_1.jpg?v=1683208957&width=400", "Gewürze & Chilis", true, false, "available", false},
 
 	// Süßes & Snacks
-	{20, "Chocolate Abuelita", "Mexikanische Trinkschokolade mit Zimt", 4.90, "/static/images/products/Chocolate Abuelita.png", "Süßes & Snacks", true},
-	{21, "Dulce de Leche", "Karamellcreme nach mexikanischer Art", 6.50, "https://via.placeholder.com/300x200/FFF8E8/FF6B35?text=Dulce+de+Leche", "Süßes & Snacks", true},
-	{22, "Pulparindo Süßigkeit von De La Rosa 280g (20 St.)", "Süß-saure Tamarinden-Süßigkeit", 7.90, "https://mexicomagico.de/cdn/shop/files/FotosProductos_16.png?v=1683208957&width=400", "Süßes & Snacks", true},
-	{23, "Churros Mix", "Fertigmischung für klassische Churros", 5.90, "https://via.placeholder.com/300x200/FFF8E8/FF6B35?text=Churros+Mix", "Süßes & Snacks", true},
-	{24, "Mazapán Mexicano", "Traditionelle Erdnuss-Süßigkeit", 3.50, "https://mexicomagico.de/cdn/shop/files/61cZu9RfZgL._SL1500.jpg?v=1683208957&width=400", "Süßes & Snacks", true},
+	{22, "Vero Mango Lollis mit Chili 16g", "Süß-scharfe Mango-Lollis mit Chili", 1.20, "/static/images/products/Vero Mango Lollis mit Chili 16g.png", "Süßes & Snacks", true, false, "available", false},
+	{23, "Pulparindo Süßigkeit von De La Rosa 280g (20 St.)", "Süß-saure Tamarinden-Süßigkeit", 7.90, "https://mexicomagico.de/cdn/shop/files/FotosProductos_16.png?v=1683208957&width=400", "Süßes & Snacks", true, false, "available", false},
+	{24, "Pelon Pelo Rico Tamarinde mit Chili 35g", "Tamarinden-Süßigkeit mit Chili", 1.49, "/static/images/products/Pelon Pelo Rico Tamarinde mit Chili 35g.png", "Süßes & Snacks", true, false, "available", false},
+	{25, "Pulparindos CHAMOY 20 St. (280 g)", "Chamoy-Süßigkeiten von De La Rosa", 7.90, "/static/images/products/Pulparindos CHAMOY 20 St. (280 g).png", "Süßes & Snacks", true, false, "available", false},
 }
 
 var recipes = []Recipe{
-	{1, "Guacamole Tradicional", "Cremiger Avocado-Dip mit Limette und Koriander", "15 Min", "Einfach", "https://via.placeholder.com/350x250/FFF8E1/8B4513?text=Guacamole", []string{"3 reife Avocados", "2 Limetten", "1 kleine Zwiebel", "2 Tomaten", "Koriander", "Salz"}, "Hauptgerichte"},
-	{2, "Tacos al Pastor", "Würzige Schweinefleisch-Tacos mit Ananas", "45 Min", "Mittel", "https://via.placeholder.com/350x250/FFF8E1/8B4513?text=Tacos+al+Pastor", []string{"500g Schweinefleisch", "Corn Tortillas", "Ananas", "Zwiebeln", "Salsa Verde", "Koriander"}, "Hauptgerichte"},
-	{3, "Quesadillas con Nopal", "Käse-Quesadillas mit Kaktusblättern", "20 Min", "Einfach", "https://via.placeholder.com/350x250/FFF8E1/8B4513?text=Quesadillas", []string{"Tortillas", "Käse", "Nopal Kaktusblätter", "Zwiebeln", "Gewürze"}, "Hauptgerichte"},
-	{4, "Chiles Rellenos", "Gefüllte Chilis mit Käse", "60 Min", "Schwer", "https://via.placeholder.com/350x250/FFF8E1/8B4513?text=Chiles+Rellenos", []string{"Poblano Chilis", "Käse", "Eier", "Mehl", "Dried Chili Mix"}, "Hauptgerichte"},
-	{5, "Mole Poblano", "Komplexe Schokoladen-Chili-Sauce", "2 Std", "Schwer", "https://via.placeholder.com/350x250/FFF8E1/8B4513?text=Mole+Poblano", []string{"Verschiedene Chilis", "Schokolade", "Nüsse", "Gewürze", "Hühnerbrühe"}, "Salsas & Saucen"},
-	{6, "Horchata Casera", "Selbstgemachte Reis-Zimt-Milch", "30 Min", "Einfach", "https://via.placeholder.com/350x250/FFF8E1/8B4513?text=Horchata", []string{"Reis", "Zimt", "Milch", "Zucker", "Vanille"}, "Getränke"},
+	{1, "Nopales- und Avocado-Salat", "Frischer Salat mit Kaktusblättern und Avocado", "15 Min", "Einfach", "/static/images/recipes/NopalesUndAvocadoSalat.png", []string{"500g Geschnittene Kaktusblätter", "1 Jalapeño (optional)", "Glutenfreie Maistortillas", "2 reife Avocados", "1 große Tomate", "1/4 rote Zwiebel", "Saft von 1 Zitrone", "2 EL frisch gehackter Koriander", "Salz und Pfeffer", "3 EL Feta-Käse"}, "Hauptgerichte", true, []string{"1. Vorbereitung der Nopales: Die Nopales unter fließendem Wasser waschen, um Schmutz zu entfernen. Die Stacheln der Nopales vorsichtig mit einem Messer oder einem Sparschäler entfernen. Die Nopales in Streifen oder Würfel schneiden, je nach Vorliebe. In einer Pfanne oder auf einem Grill etwas Olivenöl bei mittlerer bis hoher Hitze erhitzen. Die Nopales in der heißen Pfanne etwa 5-7 Minuten auf jeder Seite grillen, bis sie zart und leicht gebräunt sind. Vom Herd nehmen und in eine große Schüssel geben.", "2. Salatzubereitung: Die Avocados in Würfel und die Tomate in kleine Stücke schneiden. Die rote Zwiebel und die Jalapeño (falls verwendet) fein hacken. Die Avocados, Tomaten, rote Zwiebel und Jalapeño in die Schüssel mit den gegrillten Nopales geben. Den Zitronensaft über den Salat auspressen und den frisch gehackten Koriander hinzufügen. Alle Zutaten vorsichtig vermengen, bis sie gut kombiniert sind. Den Salat mit Salz und Pfeffer abschmecken.", "3. Servieren: Die glutenfreien Maistortillas in einer Pfanne oder auf einem Grill erwärmen, bis sie warm und leicht gebräunt sind. Den Nopales- und Avocado-Salat auf einem Teller servieren und mit den glutenfreien Maistortillas in Form von Tacos begleiten. Zum Servieren den geriebenen Feta-Käse über den Salat streuen."}, "Der Nopal ist ein äußerst nahrhaftes Lebensmittel, das eine breite Palette an gesundheitlichen Vorteilen bietet. Er ist reich an Ballaststoffen, was eine gesunde Verdauung fördert und das Gewicht kontrolliert. Es hilft, den Blutzuckerspiegel zu kontrollieren und das LDL-Cholesterin zu senken. Darüber hinaus ist er eine Quelle von Antioxidantien, die freie Radikale bekämpfen, und liefert Feuchtigkeit aufgrund seines hohen Wassergehalts. Er ist reich an essentiellen Vitaminen und Mineralstoffen wie Vitamin A, C, K, Calcium, Kalium und Eisen. Er hat auch entzündungshemmende Eigenschaften, was ihn vorteilhaft für Bedingungen wie Arthritis macht. Zusammenfassend verbessert der regelmäßige Verzehr von Nopal die Verdauungs-, Herz-Kreislauf- und Immunfunktion und hilft beim Gewichtsmanagement sowie der Feuchtigkeitsversorgung.", []string{"500g Geschnittene Kaktusblätter", "1 Jalapeño (optional, für eine pikante Note)", "Glutenfreie Maistortillas (je nach Anzahl der Portionen)"}, []string{"2 reife Avocados", "1 große Tomate", "1/4 rote Zwiebel", "Saft von 1 Zitrone", "2 Esslöffel frisch gehackter Koriander", "Salz und Pfeffer nach Geschmack", "3 Esslöffel Feta-Käse"}},
+	{2, "Hähnchen mit Mole", "Zartes Hähnchen mit komplexer Mole-Sauce", "2 Std", "Schwer", "/static/images/recipes/ZartesHähnchenMitKomplexerMoleSauce.png", []string{"1 ganzes Hähnchen", "Mole Poblano", "Verschiedene Chilis", "Schokolade", "Nüsse", "Gewürze"}, "Hauptgerichte", false, []string{"Hähnchen waschen und trockentupfen", "Mole-Sauce nach Anleitung zubereiten", "Hähnchen garen und mit Sauce servieren"}, "Ein klassisches mexikanisches Gericht aus Puebla mit komplexer, schokoladiger Sauce.", []string{"1 ganzes Hähnchen", "Mole Poblano Paste"}, []string{"Verschiedene Chilis", "Schokolade", "Nüsse", "Gewürze"}},
+	{3, "Chili Poblano (rajas) mit Sahne", "Poblano-Chilistreifen in cremiger Sahnesauce", "30 Min", "Mittel", "/static/images/recipes/PoblanoChiliStreifenInCremigerSahnesauce.png", []string{"Poblano Chilis", "Sahne", "Zwiebeln", "Knoblauch", "Gewürze", "Öl"}, "Hauptgerichte", true, []string{"Poblanos rösten und häuten", "In Streifen schneiden", "Mit Sahne und Zwiebeln zubereiten"}, "Ein cremiges, vegetarisches Gericht mit gerösteten Poblano-Chilis.", []string{"Poblano Chilis", "Sahne"}, []string{"Zwiebeln", "Knoblauch", "Gewürze", "Öl"}},
+	{4, "Mexikanische rote Pozole", "Traditionelle Hominy-Suppe mit roter Chilisauce", "3 Std", "Schwer", "/static/images/recipes/Traditionelle Hominy-Suppe mit roter Chilisauce.png", []string{"Hominy", "Schweinefleisch", "Guajillo Chilis", "Ancho Chilis", "Zwiebeln", "Knoblauch", "Oregano"}, "Hauptgerichte", false, []string{"Schweinefleisch kochen", "Chilis rösten und pürieren", "Hominy hinzufügen und köcheln lassen"}, "Eine traditionelle mexikanische Suppe, perfekt für Feiertage.", []string{"Hominy", "Schweinefleisch"}, []string{"Guajillo Chilis", "Ancho Chilis", "Zwiebeln", "Knoblauch", "Oregano"}},
+	{5, "Michelada mit Clamato", "Würziges Bier-Cocktail mit Clamato-Saft", "5 Min", "Einfach", "/static/images/recipes/Würziges Bier-Cocktail mit Clamato-Saft.jpeg", []string{"Bier", "Clamato-Saft", "Limettensaft", "Worcestershire-Sauce", "Tabasco", "Salz", "Tajín"}, "Getränke", false, []string{"Glas mit Tajín salzen", "Alle Zutaten mischen", "Mit Eis servieren"}, "Der perfekte mexikanische Cocktail für warme Tage.", []string{"Bier", "Clamato-Saft"}, []string{"Limettensaft", "Worcestershire-Sauce", "Tabasco", "Salz", "Tajín"}},
+	{6, "Flan napolitano", "Klassischer mexikanischer Karamellpudding", "4 Std", "Mittel", "/static/images/recipes/Klassischer mexikanischer Karamellpudding.png", []string{"Eier", "Kondensmilch", "Evaporierte Milch", "Zucker", "Vanille"}, "Desserts", false, []string{"Karamell zubereiten", "Pudding-Mischung vorbereiten", "Im Wasserbad backen und kühlen"}, "Ein cremiger, süßer Abschluss jeder mexikanischen Mahlzeit.", []string{"Eier", "Kondensmilch", "Evaporierte Milch"}, []string{"Zucker", "Vanille"}},
 }
 
 var currentUser = &User{1, "Maria Schmidt", "maria@example.com", "Stuttgart"}
@@ -114,6 +122,7 @@ func main() {
 	http.HandleFunc("/", homeHandler)
 	http.HandleFunc("/products", productsHandler)
 	http.HandleFunc("/recipes", recipesHandler)
+	http.HandleFunc("/recipe/", recipeDetailHandler)
 	http.HandleFunc("/product/", productDetailHandler)
 	http.HandleFunc("/cart", cartHandler)
 	http.HandleFunc("/checkout", checkoutHandler)
@@ -332,6 +341,38 @@ func recipesHandler(w http.ResponseWriter, r *http.Request) {
 	renderTemplate(w, "recipes", data)
 }
 
+func recipeDetailHandler(w http.ResponseWriter, r *http.Request) {
+	// Extract recipe ID from URL
+	idStr := r.URL.Path[len("/recipe/"):]
+	id, err := strconv.Atoi(idStr)
+	if err != nil {
+		http.NotFound(w, r)
+		return
+	}
+
+	var recipe *Recipe
+	for _, rec := range recipes {
+		if rec.ID == id {
+			recipe = &rec
+			break
+		}
+	}
+
+	if recipe == nil {
+		http.NotFound(w, r)
+		return
+	}
+
+	data := PageData{
+		Title:   recipe.Name + " - México Mágico",
+		Recipes: []Recipe{*recipe},
+		User:    currentUser,
+		Cart:    cart,
+	}
+
+	renderTemplate(w, "recipe-detail", data)
+}
+
 func checkoutHandler(w http.ResponseWriter, r *http.Request) {
 	data := PageData{
 		Title: "Sichere Kasse - México Mágico",
@@ -361,6 +402,8 @@ func renderTemplate(w http.ResponseWriter, templateName string, data PageData) {
 		templateFiles = []string{"templates/base.html", "templates/products.html"}
 	case "recipes":
 		templateFiles = []string{"templates/base.html", "templates/recipes.html"}
+	case "recipe-detail":
+		templateFiles = []string{"templates/base.html", "templates/recipe-detail.html"}
 	case "store-info":
 		templateFiles = []string{"templates/base.html", "templates/store-info.html"}
 	case "app-download":
@@ -381,8 +424,31 @@ func renderTemplate(w http.ResponseWriter, templateName string, data PageData) {
 
 	// Create template with custom functions
 	funcMap := template.FuncMap{
-		"sub": func(a, b int) int {
-			return a - b
+		"sub": func(a, b interface{}) float64 {
+			var aFloat, bFloat float64
+			
+			switch v := a.(type) {
+			case int:
+				aFloat = float64(v)
+			case float64:
+				aFloat = v
+			default:
+				aFloat = 0
+			}
+			
+			switch v := b.(type) {
+			case int:
+				bFloat = float64(v)
+			case float64:
+				bFloat = v
+			default:
+				bFloat = 0
+			}
+			
+			return aFloat - bFloat
+		},
+		"add": func(a, b int) int {
+			return a + b
 		},
 		"len": func(v interface{}) int {
 			switch s := v.(type) {

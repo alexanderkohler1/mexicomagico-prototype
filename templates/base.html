@@ -105,6 +105,16 @@
             transform: translateY(-1px);
             box-shadow: 0 4px 15px rgba(200, 16, 46, 0.3);
         }
+        
+        .language-flag {
+            transition: all 0.2s ease;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.2);
+        }
+        
+        .language-flag:hover {
+            transform: scale(1.1);
+            box-shadow: 0 2px 6px rgba(0,0,0,0.3);
+        }
 
         .section-title {
             color: var(--mexico-brown);
@@ -315,6 +325,160 @@
                 margin-bottom: 15px;
             }
         }
+
+        /* Chatbot Bubble */
+        .chatbot-bubble {
+            position: fixed;
+            right: 20px;
+            bottom: 20px;
+            background: linear-gradient(135deg, var(--mexico-red) 0%, var(--mexico-orange) 100%);
+            color: white;
+            border-radius: 20px;
+            padding: 20px;
+            box-shadow: 0 8px 25px rgba(200, 16, 46, 0.4);
+            z-index: 1000;
+            width: 280px;
+            display: none;
+            animation: chatbotSlideIn 0.5s ease-out;
+            transition: all 0.3s ease;
+        }
+
+        .chatbot-bubble:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 12px 30px rgba(200, 16, 46, 0.5);
+        }
+
+        @keyframes chatbotSlideIn {
+            from {
+                opacity: 0;
+                transform: translateX(100%);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        .chatbot-close-btn {
+            position: absolute;
+            top: 8px;
+            right: 12px;
+            background: none;
+            border: none;
+            color: white;
+            font-size: 18px;
+            cursor: pointer;
+            opacity: 0.7;
+            transition: opacity 0.3s;
+            z-index: 10;
+        }
+
+        .chatbot-close-btn:hover {
+            opacity: 1;
+        }
+
+        .chatbot-icon {
+            text-align: center;
+            margin-bottom: 10px;
+        }
+
+        .chatbot-icon i {
+            font-size: 2rem;
+            color: white;
+        }
+
+        .chatbot-content h6 {
+            margin-bottom: 8px;
+            font-weight: bold;
+            color: white;
+        }
+
+        .chatbot-content p {
+            font-size: 14px;
+            margin-bottom: 15px;
+            line-height: 1.4;
+            color: white;
+        }
+
+        .btn-chatbot {
+            background: white;
+            color: var(--mexico-red);
+            border: none;
+            border-radius: 15px;
+            padding: 10px 20px;
+            width: 100%;
+            font-weight: bold;
+            transition: all 0.3s;
+            cursor: pointer;
+        }
+
+        .btn-chatbot:hover {
+            background: var(--mexico-cream);
+            transform: translateY(-1px);
+        }
+
+        @media (max-width: 768px) {
+            .chatbot-bubble {
+                width: 260px;
+                right: 15px;
+                bottom: 15px;
+            }
+        }
+
+        /* Chatbot Mini Icon */
+        .chatbot-mini-icon {
+            position: fixed;
+            right: 20px;
+            bottom: 20px;
+            background: linear-gradient(135deg, var(--mexico-red) 0%, var(--mexico-orange) 100%);
+            color: white;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 15px rgba(200, 16, 46, 0.4);
+            cursor: pointer;
+            z-index: 1000;
+            transition: all 0.3s ease;
+            animation: pulse 2s infinite;
+        }
+
+        .chatbot-mini-icon:hover {
+            transform: scale(1.1);
+            box-shadow: 0 6px 20px rgba(200, 16, 46, 0.6);
+        }
+
+        .chatbot-mini-icon i {
+            font-size: 1.5rem;
+            color: white;
+        }
+
+        @keyframes pulse {
+            0% {
+                box-shadow: 0 4px 15px rgba(200, 16, 46, 0.4);
+            }
+            50% {
+                box-shadow: 0 4px 15px rgba(200, 16, 46, 0.4), 0 0 0 10px rgba(200, 16, 46, 0.1);
+            }
+            100% {
+                box-shadow: 0 4px 15px rgba(200, 16, 46, 0.4);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .chatbot-mini-icon {
+                right: 15px;
+                bottom: 15px;
+                width: 55px;
+                height: 55px;
+            }
+            
+            .chatbot-mini-icon i {
+                font-size: 1.3rem;
+            }
+        }
     </style>
 </head>
 <body>
@@ -366,10 +530,16 @@
                         {{end}}
                     </a>
                     {{if .User}}
-                    <span class="navbar-text text-muted">
+                    <span class="navbar-text text-muted me-3">
                         <i class="fas fa-user me-1"></i>Hola, {{.User.Name}}!
                     </span>
                     {{end}}
+                    <!-- Language Flags -->
+                    <div class="d-flex flex-column" style="gap: 2px;">
+                        <div class="language-flag" style="width: 24px; height: 16px; background: linear-gradient(to bottom, #000 33%, #f00 33%, #f00 66%, #ffce00 66%); border-radius: 2px; cursor: pointer;" title="Deutsch"></div>
+                        <div class="language-flag" style="width: 24px; height: 16px; background: linear-gradient(to bottom, #002868 40%, #fff 40%, #fff 60%, #bf0a30 60%); border-radius: 2px; cursor: pointer;" title="English"></div>
+                        <div class="language-flag" style="width: 24px; height: 16px; background: linear-gradient(to bottom, #aa151b 33%, #f1bf00 33%, #f1bf00 66%, #aa151b 66%); border-radius: 2px; cursor: pointer;" title="Español"></div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -386,11 +556,31 @@
         <h4>Newsletter anmelden</h4>
         <p>Jetzt anmelden und 10% Rabatt sichern! 🌶️</p>
         <form onsubmit="subscribeNewsletter(event)">
-            <input type="email" placeholder="E-Mail Adresse eingeben" required>
+            <input type="email" id="newsletterEmail" name="email" placeholder="E-Mail Adresse eingeben" required>
             <button type="submit" class="btn-newsletter">
                 <i class="fas fa-envelope me-2"></i>Anmelden
             </button>
         </form>
+    </div>
+
+    <!-- Chatbot Bubble -->
+    <div id="chatbotBubble" class="chatbot-bubble">
+        <button class="chatbot-close-btn" onclick="closeChatbot()">×</button>
+        <div class="chatbot-icon">
+            <i class="fas fa-comments"></i>
+        </div>
+        <div class="chatbot-content">
+            <h6>¡Hola! 👋</h6>
+            <p>Brauchen Sie Hilfe? Ich bin hier, um Ihnen bei Fragen zu helfen!</p>
+            <button class="btn-chatbot" onclick="openChat()">
+                <i class="fas fa-comment me-1"></i>Chat starten
+            </button>
+        </div>
+    </div>
+
+    <!-- Chatbot Mini Icon (appears after closing the bubble) -->
+    <div id="chatbotMiniIcon" class="chatbot-mini-icon" onclick="showChatbot()">
+        <i class="fas fa-comments"></i>
     </div>
 
     <!-- Cookie Banner -->
@@ -511,7 +701,7 @@
 
         function subscribeNewsletter(event) {
             event.preventDefault();
-            const email = event.target.querySelector('input[type="email"]').value;
+            const email = document.getElementById('newsletterEmail').value;
             
             // Hier würde normalerweise die E-Mail an den Server gesendet
             alert('Vielen Dank! Sie wurden erfolgreich angemeldet und erhalten Ihren 10% Rabattcode per E-Mail.');
@@ -557,8 +747,72 @@
             showCookieBanner();
         });
 
-        // Shopping cart functionality
+        // Product data for modal (shared across all pages)
+        const products = {
+            1: "KAKTUSBLÄTTER NOPALES STREIFEN IN SALZLAKE 300g",
+            2: "GANZE NOPALES KAKTUSBLÄTTER IM BEUTEL VON AZTECA 1kg",
+            3: "Tamal mit Chili Poblano und Käse (Rajas con queso) 300 g (3 St.)",
+            4: "Chorizoqueso 500g",
+            5: "Cochinita Pibil (servierfertig) 250g",
+            6: "CHILI ARBOL VON XATZE 75gr",
+            7: "400 Conejos Mezcal Joven 38% Vol. 0.7 l",
+            8: "Mezcal Don Ramón Joven 100% Agave Salmiana 40% Vol. 0,7l",
+            9: "MODELO ESPECIAL HELLES BIER 355 ml 4.5% Vol. Alk.",
+            10: "BOING MANGO SAFT 354 ML",
+            11: "HORCHATA KONZENTRAT VON MEXQUISITA 700 ML",
+            12: "SCHARFE SOßE LA BOTANERA CLASICA 1L",
+            13: "HABANERO EXTRASCHARFE SOßE VON EL YUCATECO 120ml",
+            14: "Schwarze Habanero Chili Soße El Yucateco 120ml",
+            15: "VALENTINA EXTRA SCHARFE SAUCE 370ml",
+            16: "Totopos Nixtamal Tortilla-Chips gesalzen 250g",
+            17: "frische Maistortillas aus Nixtamal 15cm ca. 10 Stk. Glutenfrei",
+            18: "MAIS TOSTADAS VON CHARRAS 325 g",
+            19: "TAJIN CHILI LIMETTEN PULVER 142gr",
+            20: "GEWÜRZ FÜR FAJITA - COCHINITA PIBIL 142 g",
+            21: "MEXIKANISCHER OREGANO (GEWÜRZ) VON XATZE 20gr",
+            22: "Vero Mango Lollis mit Chili 16g",
+            23: "Pulparindo Süßigkeit von De La Rosa 280g (20 St.)",
+            24: "Pelon Pelo Rico Tamarinde mit Chili 35g",
+            25: "Pulparindos CHAMOY 20 St. (280 g)"
+        };
+
+        // Shopping cart functionality with modal
         function addToCart(productId) {
+            console.log('addToCart called with productId:', productId);
+            
+            // Check if modal exists on this page
+            const modal = document.getElementById('cartSuccessModal');
+            if (modal) {
+                // Get product name
+                const productName = products[productId] || "Produkt";
+                console.log('Product name:', productName);
+                
+                // Update modal content
+                const productNameElement = document.getElementById('productName');
+                if (productNameElement) {
+                    productNameElement.textContent = productName;
+                }
+                
+                // Show modal manually
+                console.log('Modal element found, showing modal');
+                modal.style.display = 'block';
+                modal.classList.add('show');
+                document.body.classList.add('modal-open');
+                
+                // Create backdrop
+                const backdrop = document.createElement('div');
+                backdrop.className = 'modal-backdrop fade show';
+                backdrop.id = 'modalBackdrop';
+                backdrop.onclick = closeModal;
+                document.body.appendChild(backdrop);
+            } else {
+                // Fallback to alert if no modal on page
+                const productName = products[productId] || "Produkt";
+                alert(`${productName} wurde zum Warenkorb hinzugefügt!`);
+                location.reload();
+            }
+            
+            // Make API call to add to cart
             fetch('/api/cart/add', {
                 method: 'POST',
                 headers: {
@@ -572,8 +826,8 @@
             .then(response => response.json())
             .then(data => {
                 if (data.success) {
-                    alert('Produkt wurde zum Warenkorb hinzugefügt!');
-                    location.reload();
+                    console.log('Successfully added to cart');
+                    // Modal is already shown above
                 }
             })
             .catch(error => {
@@ -581,6 +835,66 @@
                 alert('Fehler beim Hinzufügen zum Warenkorb');
             });
         }
+
+        // Function to close modal (shared across pages)
+        function closeModal() {
+            const modal = document.getElementById('cartSuccessModal');
+            if (modal) {
+                modal.style.display = 'none';
+                modal.classList.remove('show');
+                document.body.classList.remove('modal-open');
+                
+                // Remove backdrop if exists
+                const backdrop = document.getElementById('modalBackdrop');
+                if (backdrop) {
+                    backdrop.remove();
+                }
+            }
+        }
+
+        // Chatbot functions
+        function closeChatbot() {
+            const chatbot = document.getElementById('chatbotBubble');
+            const miniIcon = document.getElementById('chatbotMiniIcon');
+            
+            chatbot.style.display = 'none';
+            miniIcon.style.display = 'flex'; // Show mini icon
+            
+            // Remember that user closed chatbot for this session
+            sessionStorage.setItem('chatbotClosed', 'true');
+        }
+
+        function showChatbot() {
+            const chatbot = document.getElementById('chatbotBubble');
+            const miniIcon = document.getElementById('chatbotMiniIcon');
+            
+            chatbot.style.display = 'block';
+            miniIcon.style.display = 'none'; // Hide mini icon
+            
+            // Remove the closed state
+            sessionStorage.removeItem('chatbotClosed');
+        }
+
+        function openChat() {
+            // This is a dummy function - in a real implementation this would open the chat interface
+            alert('Chat-Funktion wird geladen... 💬\n\nIn einer echten Implementierung würde hier das Chat-Interface geöffnet werden.');
+        }
+
+        // Show chatbot immediately when page loads
+        document.addEventListener('DOMContentLoaded', function() {
+            const chatbotClosed = sessionStorage.getItem('chatbotClosed');
+            
+            if (chatbotClosed) {
+                // Show mini icon if chatbot was previously closed
+                document.getElementById('chatbotMiniIcon').style.display = 'flex';
+            } else {
+                // Show full chatbot immediately
+                const chatbot = document.getElementById('chatbotBubble');
+                if (chatbot) {
+                    chatbot.style.display = 'block';
+                }
+            }
+        });
     </script>
 </body>
 </html>

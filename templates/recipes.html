@@ -7,36 +7,28 @@
     </div>
 </section>
 
-<!-- Recipe Filter -->
-<section class="py-5" style="background: linear-gradient(135deg, var(--mexico-orange) 0%, var(--mexico-green) 100%);">
+<!-- Recipes Grid -->
+<section class="py-5">
     <div class="container">
         <!-- Category Filter Buttons -->
         <div class="text-center mb-5">
-            <h2 class="section-title mb-4" style="color: white; display: block; width: 100%;">Nach Kategorien filtern</h2>
+            <h2 class="section-title mb-4" style="color: var(--mexico-brown);">Nach Kategorien filtern</h2>
             <div class="d-flex flex-wrap justify-content-center gap-2" role="group">
-                <button type="button" class="btn btn-light recipe-filter active" data-category="all">
+                <button type="button" class="btn btn-outline-secondary recipe-filter active" data-category="all">
                     <i class="fas fa-th-large me-1"></i>Alle Rezepte
                 </button>
-                <button type="button" class="btn btn-light recipe-filter" data-category="Hauptgerichte">
+                <button type="button" class="btn btn-outline-secondary recipe-filter" data-category="Hauptgerichte">
                     <i class="fas fa-utensils me-1"></i>Hauptgerichte
                 </button>
-                <button type="button" class="btn btn-light recipe-filter" data-category="Getränke">
+                <button type="button" class="btn btn-outline-secondary recipe-filter" data-category="Getränke">
                     <i class="fas fa-wine-bottle me-1"></i>Getränke
                 </button>
-                <button type="button" class="btn btn-light recipe-filter" data-category="Salsas & Saucen">
-                    <i class="fas fa-pepper-hot me-1"></i>Salsas & Saucen
-                </button>
-                <button type="button" class="btn btn-light recipe-filter" data-category="Desserts">
+                <button type="button" class="btn btn-outline-secondary recipe-filter" data-category="Desserts">
                     <i class="fas fa-birthday-cake me-1"></i>Desserts
                 </button>
             </div>
         </div>
-    </div>
-</section>
-
-<!-- Recipes Grid -->
-<section class="py-5">
-    <div class="container">
+        
         <div class="row" id="recipes-container">
             {{range .Recipes}}
             <div class="col-md-6 col-lg-4 mb-4 recipe-item" data-category="{{.Category}}">
@@ -47,6 +39,11 @@
                             <span class="badge" style="background: var(--mexico-orange); color: white;">
                                 <i class="fas fa-utensils"></i> {{.Category}}
                             </span>
+                            {{if .IsVegan}}
+                            <span class="badge bg-success ms-1" style="color: white;">
+                                <i class="fas fa-leaf"></i> Vegan
+                            </span>
+                            {{end}}
                         </div>
                         <div class="position-absolute bottom-0 start-0 end-0 p-3" style="background: linear-gradient(transparent, rgba(0,0,0,0.7));">
                             <h5 class="text-white mb-0">{{.Name}}</h5>
@@ -80,9 +77,9 @@
                         </div>
 
                         <div class="mt-auto">
-                            <button class="btn btn-mexico btn-sm w-100 mb-2">
+                            <a href="/recipe/{{.ID}}" class="btn btn-mexico btn-sm w-100 mb-2">
                                 <i class="fas fa-utensils me-2"></i>Komplettes Rezept
-                            </button>
+                            </a>
                             <div class="d-flex gap-2">
                                 <button class="btn btn-outline-mexico btn-sm flex-fill">
                                     <i class="fas fa-heart"></i> Favorit
