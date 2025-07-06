@@ -10,9 +10,36 @@
 <!-- Products with Filter -->
 <section class="py-5" style="background: linear-gradient(135deg, var(--mexico-orange) 0%, var(--mexico-green) 100%);">
     <div class="container">
-        <!-- Category Filter Buttons -->
+        <!-- Search and Filter Section -->
         <div class="text-center mb-5">
-            <h2 class="section-title mb-4" style="color: white;">Nach Kategorien filtern</h2>
+            <h2 class="section-title mb-4" style="color: white;">Produkte durchsuchen</h2>
+            
+            <!-- Search Bar -->
+            <div class="row justify-content-center mb-4">
+                <div class="col-md-8">
+                    <div class="input-group input-group-lg">
+                        <span class="input-group-text" style="background: white; border: none;">
+                            <i class="fas fa-search" style="color: var(--mexico-red);"></i>
+                        </span>
+                        <input type="text" id="search-input" class="form-control" placeholder="Suche nach Produkten..." style="border: none; border-radius: 0 25px 25px 0;">
+                        <div class="dropdown">
+                            <button class="btn btn-outline-light dropdown-toggle" type="button" id="sortDropdown" data-bs-toggle="dropdown" aria-expanded="false" style="border-radius: 0; border-left: 1px solid #dee2e6;">
+                                <i class="fas fa-sort me-2"></i>Sortieren
+                            </button>
+                            <ul class="dropdown-menu" aria-labelledby="sortDropdown">
+                                <li><a class="dropdown-item sort-option" href="#" data-sort="name-asc"><i class="fas fa-sort-alpha-down me-2"></i>Name A-Z</a></li>
+                                <li><a class="dropdown-item sort-option" href="#" data-sort="name-desc"><i class="fas fa-sort-alpha-up me-2"></i>Name Z-A</a></li>
+                                <li><a class="dropdown-item sort-option" href="#" data-sort="price-asc"><i class="fas fa-sort-numeric-down me-2"></i>Preis aufsteigend</a></li>
+                                <li><a class="dropdown-item sort-option" href="#" data-sort="price-desc"><i class="fas fa-sort-numeric-up me-2"></i>Preis absteigend</a></li>
+                                <li><a class="dropdown-item sort-option" href="#" data-sort="topseller"><i class="fas fa-star me-2"></i>Topseller zuerst</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Category Filter Buttons -->
+            <h3 class="section-title mb-3" style="color: white; font-size: 1.5rem;">Nach Kategorien filtern</h3>
             <div class="btn-group flex-wrap" role="group">
                 <button type="button" class="btn btn-light category-filter active" data-category="all">
                     <i class="fas fa-th-large me-1"></i>Alle Kategorien
@@ -193,30 +220,106 @@ function addRecommendedProduct(productId) {
     // fetch('/api/cart/add', { ... })
 }
 
-// Category Filter Functionality
+// Search and Filter Functionality
 document.addEventListener('DOMContentLoaded', function() {
     const filterButtons = document.querySelectorAll('.category-filter');
     const productItems = document.querySelectorAll('.product-item');
+    const searchInput = document.getElementById('search-input');
+    const sortOptions = document.querySelectorAll('.sort-option');
+    
+    let currentProducts = Array.from(productItems);
+    let currentCategory = 'all';
+    let currentSearch = '';
 
+    // Search functionality
+    searchInput.addEventListener('input', function() {
+        currentSearch = this.value.toLowerCase();
+        filterAndSortProducts();
+    });
+
+    // Category filter functionality
     filterButtons.forEach(button => {
         button.addEventListener('click', function() {
-            const category = this.dataset.category;
+            currentCategory = this.dataset.category;
             
             // Update active button
             filterButtons.forEach(btn => btn.classList.remove('active'));
             this.classList.add('active');
             
-            // Filter products with smooth animation
-            productItems.forEach(item => {
-                if (category === 'all' || item.dataset.category === category) {
-                    item.style.display = 'block';
-                    item.style.animation = 'fadeIn 0.5s ease-in';
-                } else {
-                    item.style.display = 'none';
-                }
-            });
+            filterAndSortProducts();
         });
     });
+
+    // Sort functionality
+    sortOptions.forEach(option => {
+        option.addEventListener('click', function(e) {
+            e.preventDefault();
+            const sortType = this.dataset.sort;
+            sortProducts(sortType);
+        });
+    });
+
+    function filterAndSortProducts() {
+        productItems.forEach(item => {
+            const productName = item.querySelector('.card-title').textContent.toLowerCase();
+            const productCategory = item.dataset.category;
+            const productDescription = item.querySelector('.card-text').textContent.toLowerCase();
+            
+            // Check if product matches search and category
+            const matchesSearch = currentSearch === '' || 
+                                productName.includes(currentSearch) || 
+                                productDescription.includes(currentSearch);
+            const matchesCategory = currentCategory === 'all' || productCategory === currentCategory;
+            
+            if (matchesSearch && matchesCategory) {
+                item.style.display = 'block';
+                item.style.animation = 'fadeIn 0.5s ease-in';
+            } else {
+                item.style.display = 'none';
+            }
+        });
+    }
+
+    function sortProducts(sortType) {
+        const container = document.getElementById('products-container');
+        const visibleProducts = Array.from(productItems).filter(item => 
+            item.style.display !== 'none'
+        );
+
+        visibleProducts.sort((a, b) => {
+            switch(sortType) {
+                case 'name-asc':
+                    return a.querySelector('.card-title').textContent.localeCompare(
+                        b.querySelector('.card-title').textContent
+                    );
+                case 'name-desc':
+                    return b.querySelector('.card-title').textContent.localeCompare(
+                        a.querySelector('.card-title').textContent
+                    );
+                case 'price-asc':
+                    const priceA = parseFloat(a.querySelector('.card-body span').textContent.replace('€', '').replace(',', '.'));
+                    const priceB = parseFloat(b.querySelector('.card-body span').textContent.replace('€', '').replace(',', '.'));
+                    return priceA - priceB;
+                case 'price-desc':
+                    const priceA2 = parseFloat(a.querySelector('.card-body span').textContent.replace('€', '').replace(',', '.'));
+                    const priceB2 = parseFloat(b.querySelector('.card-body span').textContent.replace('€', '').replace(',', '.'));
+                    return priceB2 - priceA2;
+                case 'topseller':
+                    const isTopSellerA = a.querySelector('.badge.bg-warning') !== null;
+                    const isTopSellerB = b.querySelector('.badge.bg-warning') !== null;
+                    if (isTopSellerA && !isTopSellerB) return -1;
+                    if (!isTopSellerA && isTopSellerB) return 1;
+                    return 0;
+                default:
+                    return 0;
+            }
+        });
+
+        // Re-append sorted products to container
+        visibleProducts.forEach(product => {
+            container.appendChild(product);
+        });
+    }
 });
 </script>
 
