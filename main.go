@@ -84,9 +84,9 @@ var products = []Product{
 	{11, "HORCHATA KONZENTRAT VON MEXQUISITA 700 ML", "Konzentrat für traditionelle Horchata", 7.60, "/static/images/products/HORCHATA KONZENTRAT VON MEXQUISITA 700 ML.png", "Getränke", false, false, "coming_soon", false},
 
 	// Salsas & Saucen
-	{12, "SCHARFE SOßE LA BOTANERA CLASICA 1L", "Klassische scharfe Sauce aus Mexiko", 5.99, "/static/images/products/SCHARFE SOße LA BOTANERA CLASICA 1L.png", "Salsas & Saucen", true, false, "available", true},
+	{12, "Schwarze Habanero Chili Soße El Yucateco 120ml", "Schwarze Habanero-Sauce mit einzigartigem Geschmack", 4.49, "/static/images/products/Schwarze Habanero Chili Soße El Yucateco 120ml.png", "Salsas & Saucen", true, false, "available", true},
 	{13, "HABANERO EXTRASCHARFE SOßE VON EL YUCATECO 120ml", "Extrascharfe Habanero-Sauce", 4.49, "/static/images/products/HABANERO EXTRASCHARFE SOße VON EL YUCATECO 120ml.png", "Salsas & Saucen", true, false, "available", false},
-	{14, "Schwarze Habanero Chili Soße El Yucateco 120ml", "Schwarze Habanero-Sauce mit einzigartigem Geschmack", 4.49, "/static/images/products/Schwarze Habanero Chili Soße El Yucateco 120ml.png", "Salsas & Saucen", true, false, "available", false},
+	{14, "SCHARFE SOßE LA BOTANERA CLASICA 1L", "Klassische scharfe Sauce aus Mexiko", 5.99, "/static/images/products/SCHARFE SOße LA BOTANERA CLASICA 1L.png", "Salsas & Saucen", true, false, "available", false},
 	{15, "VALENTINA EXTRA SCHARFE SAUCE 370ml", "Mexikos beliebteste scharfe Sauce", 3.69, "/static/images/products/VALENTINA EXTRA SCHARFE SAUCE 370ml.png", "Salsas & Saucen", true, false, "available", false},
 
 	// Gewürze & Chilis
