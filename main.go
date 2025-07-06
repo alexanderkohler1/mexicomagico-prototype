@@ -11,16 +11,16 @@ import (
 
 // Product represents a Mexican food product
 type Product struct {
-	ID             int     `json:"id"`
-	Name           string  `json:"name"`
-	Description    string  `json:"description"`
-	Price          float64 `json:"price"`
-	Image          string  `json:"image"`
-	Category       string  `json:"category"`
-	InStock        bool    `json:"in_stock"`
-	RequiresAgeVerification bool `json:"requires_age_verification"`
-	AvailabilityStatus string `json:"availability_status"`
-	IsTopSeller    bool    `json:"is_top_seller"`
+	ID                      int     `json:"id"`
+	Name                    string  `json:"name"`
+	Description             string  `json:"description"`
+	Price                   float64 `json:"price"`
+	Image                   string  `json:"image"`
+	Category                string  `json:"category"`
+	InStock                 bool    `json:"in_stock"`
+	RequiresAgeVerification bool    `json:"requires_age_verification"`
+	AvailabilityStatus      string  `json:"availability_status"`
+	IsTopSeller             bool    `json:"is_top_seller"`
 }
 
 // User represents a website user/customer
@@ -39,18 +39,18 @@ type CartItem struct {
 
 // Recipe represents a Mexican recipe
 type Recipe struct {
-	ID              int      `json:"id"`
-	Name            string   `json:"name"`
-	Description     string   `json:"description"`
-	PrepTime        string   `json:"prep_time"`
-	Difficulty      string   `json:"difficulty"`
-	Image           string   `json:"image"`
-	Ingredients     []string `json:"ingredients"`
-	Category        string   `json:"category"`
-	IsVegan         bool     `json:"is_vegan"`
-	Instructions    []string `json:"instructions"`
-	AboutRecipe     string   `json:"about_recipe"`
-	InStoreIngredients []string `json:"in_store_ingredients"`
+	ID                    int      `json:"id"`
+	Name                  string   `json:"name"`
+	Description           string   `json:"description"`
+	PrepTime              string   `json:"prep_time"`
+	Difficulty            string   `json:"difficulty"`
+	Image                 string   `json:"image"`
+	Ingredients           []string `json:"ingredients"`
+	Category              string   `json:"category"`
+	IsVegan               bool     `json:"is_vegan"`
+	Instructions          []string `json:"instructions"`
+	AboutRecipe           string   `json:"about_recipe"`
+	InStoreIngredients    []string `json:"in_store_ingredients"`
 	AdditionalIngredients []string `json:"additional_ingredients"`
 }
 
@@ -142,7 +142,7 @@ func main() {
 	if port == "" {
 		port = "8080"
 	}
-	
+
 	log.Printf("Server starting on port %s", port)
 	log.Fatal(http.ListenAndServe(":"+port, nil))
 }
@@ -447,7 +447,7 @@ func checkoutHandler(w http.ResponseWriter, r *http.Request) {
 		Cart:  cart,
 		User:  currentUser,
 	}
-	
+
 	renderTemplate(w, "checkout", data)
 }
 
@@ -456,7 +456,7 @@ func orderConfirmationHandler(w http.ResponseWriter, r *http.Request) {
 		Title: "Bestellung bestätigt - México Mágico",
 		User:  currentUser,
 	}
-	
+
 	renderTemplate(w, "order-confirmation", data)
 }
 
@@ -494,7 +494,7 @@ func renderTemplate(w http.ResponseWriter, templateName string, data PageData) {
 	funcMap := template.FuncMap{
 		"sub": func(a, b interface{}) float64 {
 			var aFloat, bFloat float64
-			
+
 			switch v := a.(type) {
 			case int:
 				aFloat = float64(v)
@@ -503,7 +503,7 @@ func renderTemplate(w http.ResponseWriter, templateName string, data PageData) {
 			default:
 				aFloat = 0
 			}
-			
+
 			switch v := b.(type) {
 			case int:
 				bFloat = float64(v)
@@ -512,7 +512,7 @@ func renderTemplate(w http.ResponseWriter, templateName string, data PageData) {
 			default:
 				bFloat = 0
 			}
-			
+
 			return aFloat - bFloat
 		},
 		"add": func(a, b int) int {
